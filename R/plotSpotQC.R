@@ -26,7 +26,7 @@
 #' @param height Plot height (inches).
 #' 
 #' 
-#' @return Saves a plot.
+#' @return Displays or saves a plot.
 #' 
 #' 
 #' @importFrom SingleCellExperiment SingleCellExperiment colData

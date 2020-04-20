@@ -36,7 +36,7 @@ screen instead.}
 \item{height}{Plot height (inches).}
 }
 \value{
-Saves a plot.
+Displays or saves a plot.
 }
 \description{
 Plots for spot-level quality control (QC)
