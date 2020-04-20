@@ -1,0 +1,19 @@
+Package: prespace
+Version: 0.0.1
+Title: Methods and visualizations for preprocessing spatial transcriptomics data
+Description: Methods and visualizations for preprocessing spatial transcriptomics data
+Authors@R: person("Lukas M.", "Weber", email = "lukas.weber.edu@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-3282-1730"))
+URL: https://github.com/lmweber/prespace
+BugReports: https://github.com/lmweber/prespace/issues
+License: MIT + file LICENSE
+biocViews:
+    SingleCell
+Depends: R (>= 3.6.1)
+Imports:
+    SingleCellExperiment
+VignetteBuilder: knitr
+Suggests:
+    BiocStyle,
+    knitr,
+    rmarkdown
+RoxygenNote: 7.1.0
