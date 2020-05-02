@@ -8,7 +8,7 @@ BugReports: https://github.com/lmweber/prespace/issues
 License: MIT + file LICENSE
 biocViews:
     SingleCell
-Depends: R (>= 3.6.1)
+Depends: R (>= 4.0.0)
 Imports:
     SingleCellExperiment
 VignetteBuilder: knitr
