@@ -1,10 +1,10 @@
-Package: prespace
+Package: spatzli
 Version: 0.0.1
-Title: Methods and visualizations for preprocessing spatial transcriptomics data
-Description: Methods and visualizations for preprocessing spatial transcriptomics data
+Title: Functions for analyzing spatial transcriptomics data
+Description: Methods and visualizations for analyzing spatial transcriptomics data
 Authors@R: person("Lukas M.", "Weber", email = "lukas.weber.edu@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-3282-1730"))
-URL: https://github.com/lmweber/prespace
-BugReports: https://github.com/lmweber/prespace/issues
+URL: https://github.com/lmweber/spatzli
+BugReports: https://github.com/lmweber/spatzli/issues
 License: MIT + file LICENSE
 biocViews:
     SingleCell

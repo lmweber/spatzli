@@ -1,4 +1,6 @@
-# prespace
-R package to collect functions for preprocessing spatial transcriptomics data
+# spatzli
 
-Work in progress
+R package containing functions for analyzing spatial transcriptomics data
+
+To be submitted to Bioconductor
+
