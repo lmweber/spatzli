@@ -59,7 +59,7 @@ plotQCscatter <- function(spe,
     theme_bw()
   
   if (!is.null(threshold)) {
-    p <- p + geom_hline(yintercept = 500, color = "red")
+    p <- p + geom_hline(yintercept = threshold, color = "red")
   }
   
   if (trend) {
