@@ -4,23 +4,19 @@
 \alias{plotQCspots}
 \title{plotQCspots}
 \usage{
-plotQCspots(spe, x_coord = x_coord, y_coord = y_coord, discard = discard)
+plotQCspots(spe, x_coord = "x_coord", y_coord = "y_coord", discard = "discard")
 }
 \arguments{
 \item{spe}{Input object (SpatialExperiment or SingleCellExperiment).}
 
 \item{x_coord}{Name of column in colData containing x coordinates. Default =
-x_coord. Note that the column name needs to be provided as a variable name,
-not a character string (due to the way ggplot2 works).}
+"x_coord".}
 
 \item{y_coord}{Name of column in colData containing y coordinates. Default =
-y_coord. Note that the column name needs to be provided as a variable name,
-not a character string (due to the way ggplot2 works).}
+"y_coord".}
 
 \item{discard}{Name of column containing logical entries identifying spots to
-be discarded. Default = discard. Note that the column name needs to be
-provided as a variable name, not a character string (due to the way ggplot2
-works).}
+be discarded. Default = "discard".}
 }
 \value{
 Returns ggplot object containing plot. Returning the plot as an

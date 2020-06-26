@@ -11,16 +11,13 @@
 #' @param spe Input object (SpatialExperiment or SingleCellExperiment).
 #'
 #' @param x_coord Name of column in colData containing x coordinates. Default =
-#'   x_coord. Note that the column name needs to be provided as a variable name,
-#'   not a character string (due to the way ggplot2 works).
+#'   "x_coord".
 #'
 #' @param y_coord Name of column in colData containing y coordinates. Default =
-#'   y_coord. Note that the column name needs to be provided as a variable name,
-#'   not a character string (due to the way ggplot2 works).
+#'   "y_coord".
 #'
 #' @param cluster_id Name of column containing cluster IDs. Default =
-#'   cluster_id. Note that the column name needs to be provided as a variable
-#'   name, not a character string (due to the way ggplot2 works).
+#'   "cluster_id".
 #'
 #' @param palette Color palette. Available options are "libd_layer_colors" and
 #'   "Okabe-Ito". To use a custom palette, provide a vector of hex codes for the
@@ -33,6 +30,7 @@
 #'   different formatting).
 #'
 #'
+#' @importFrom rlang sym "!!"
 #' @importFrom SingleCellExperiment colData
 #' @importFrom magrittr "%>%"
 #' @importFrom ggplot2 ggplot aes geom_point coord_fixed scale_color_manual
@@ -44,17 +42,15 @@
 #' TO DO
 #' 
 plotClustersSpots <- function(spe, 
-                              x_coord = x_coord, y_coord = y_coord, 
-                              cluster_id = cluster_id, 
+                              x_coord = "x_coord", y_coord = "y_coord", 
+                              cluster_id = "cluster_id", 
                               palette = "libd_layer_colors") {
   
-  # note: using quasiquotation to allow custom variable names in ggplot ("enquo"
-  # and "!!" below, and arguments provided as variable names instead of
-  # character strings)
+  # note: using quasiquotation to allow custom variable names in ggplot ("sym" and "!!")
   
-  x_coord <- enquo(x_coord)
-  y_coord <- enquo(y_coord)
-  cluster_id <- enquo(cluster_id)
+  x_coord <- sym(x_coord)
+  y_coord <- sym(y_coord)
+  cluster_id <- sym(cluster_id)
   
   if (palette == "libd_layer_colors") {
     palette <- c("#F0027F", "#377EB8", "#4DAF4A", "#984EA3", "#FFD700", 

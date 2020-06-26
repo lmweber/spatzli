@@ -11,17 +11,13 @@
 #' @param spe Input object (SpatialExperiment or SingleCellExperiment).
 #'
 #' @param x_coord Name of column in colData containing x coordinates. Default =
-#'   x_coord. Note that the column name needs to be provided as a variable name,
-#'   not a character string (due to the way ggplot2 works).
+#'   "x_coord".
 #'
 #' @param y_coord Name of column in colData containing y coordinates. Default =
-#'   y_coord. Note that the column name needs to be provided as a variable name,
-#'   not a character string (due to the way ggplot2 works).
+#'   "y_coord".
 #'
 #' @param discard Name of column containing logical entries identifying spots to
-#'   be discarded. Default = discard. Note that the column name needs to be
-#'   provided as a variable name, not a character string (due to the way ggplot2
-#'   works).
+#'   be discarded. Default = "discard".
 #'
 #'
 #'
@@ -30,6 +26,7 @@
 #'   different formatting).
 #'
 #'
+#' @importFrom rlang sym "!!"
 #' @importFrom SingleCellExperiment colData
 #' @importFrom magrittr "%>%"
 #' @importFrom ggplot2 ggplot aes geom_point coord_fixed scale_color_manual
@@ -41,16 +38,14 @@
 #' TO DO
 #' 
 plotQCspots <- function(spe, 
-                        x_coord = x_coord, y_coord = y_coord, 
-                        discard = discard) {
+                        x_coord = "x_coord", y_coord = "y_coord", 
+                        discard = "discard") {
   
-  # note: using quasiquotation to allow custom variable names in ggplot ("enquo"
-  # and "!!" below, and arguments provided as variable names instead of
-  # character strings)
+  # note: using quasiquotation to allow custom variable names in ggplot ("sym" and "!!")
   
-  x_coord <- enquo(x_coord)
-  y_coord <- enquo(y_coord)
-  discard <- enquo(discard)
+  x_coord <- sym(x_coord)
+  y_coord <- sym(y_coord)
+  discard <- sym(discard)
   
   as.data.frame(colData(spe)) %>% 
     ggplot(aes(x = !!x_coord, y = !!y_coord, color = !!discard)) + 
