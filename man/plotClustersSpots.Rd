@@ -9,7 +9,7 @@ plotClustersSpots(
   x_coord = x_coord,
   y_coord = y_coord,
   cluster_id = cluster_id,
-  palette = "Okabe-Ito"
+  palette = "libd_layer_colors"
 )
 }
 \arguments{
@@ -27,8 +27,9 @@ not a character string (due to the way ggplot2 works).}
 cluster_id. Note that the column name needs to be provided as a variable
 name, not a character string (due to the way ggplot2 works).}
 
-\item{palette}{Color palette. Default = "Okabe-Ito". To use a different
-palette, provide a vector of hex codes for the colors.}
+\item{palette}{Color palette. Available options are "libd_layer_colors" and
+"Okabe-Ito". To use a custom palette, provide a vector of hex codes for the
+colors.}
 }
 \value{
 Returns ggplot object containing plot. Returning the plot as an

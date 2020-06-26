@@ -54,7 +54,7 @@ plotQCspots <- function(spe,
   
   as.data.frame(colData(spe)) %>% 
     ggplot(aes(x = !!x_coord, y = !!y_coord, color = !!discard)) + 
-    geom_point(size = 0.9) + 
+    geom_point(size = 0.8) + 
     coord_fixed() + 
     scale_color_manual(values = c("gray90", "red")) + 
     ggtitle("Quality control: discarded spots") + 
