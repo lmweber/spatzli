@@ -34,7 +34,7 @@
 #' @export
 #' 
 #' @examples
-#' TO DO
+#' # TO DO
 #' 
 plotQCspots <- function(spe, 
                         x_coord = "x_coord", y_coord = "y_coord", 

@@ -41,7 +41,7 @@
 #' @export
 #'
 #' @examples
-#' TO DO
+#' # TO DO
 #' 
 plotClustersDimRed <- function(spe, 
                                type = "UMAP", 

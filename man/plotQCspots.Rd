@@ -33,6 +33,6 @@ This function generates a plot showing spots to be discarded on the physical
 x-y coordinates of the tissue slide.
 }
 \examples{
-TO DO
+# TO DO
 
 }

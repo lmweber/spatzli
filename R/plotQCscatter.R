@@ -41,7 +41,7 @@
 #' @export
 #'
 #' @examples
-#' TO DO
+#' # TO DO
 #' 
 plotQCscatter <- function(spe, 
                           cell_count = "cell_count", metric = "detected", 

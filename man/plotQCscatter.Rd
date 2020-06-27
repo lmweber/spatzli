@@ -46,6 +46,6 @@ This function generates a scatterplot showing a QC metric (e.g. library size
 or number of expressed features) vs. number of cells per spot.
 }
 \examples{
-TO DO
+# TO DO
 
 }

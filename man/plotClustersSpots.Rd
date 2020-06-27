@@ -43,6 +43,6 @@ This function generates a plot showing cluster labels on the spots in the
 physical x-y coordinates of the tissue slide.
 }
 \examples{
-TO DO
+# TO DO
 
 }

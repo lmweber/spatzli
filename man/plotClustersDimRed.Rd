@@ -47,6 +47,6 @@ This function generates a plot showing cluster labels on the spots in the
 dimension-reduced space (PCA or UMAP).
 }
 \examples{
-TO DO
+# TO DO
 
 }
