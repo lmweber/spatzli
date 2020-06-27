@@ -10,7 +10,11 @@ biocViews:
     SingleCell
 Depends: R (>= 4.0.0)
 Imports:
-    SingleCellExperiment
+    SingleCellExperiment, 
+    magrittr, 
+    rlang, 
+    ggplot2, 
+    ggExtra
 VignetteBuilder: knitr
 Suggests:
     BiocStyle,

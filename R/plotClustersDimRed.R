@@ -33,7 +33,7 @@
 #'
 #'
 #' @importFrom rlang sym "!!"
-#' @importFrom SingleCellExperiment colData
+#' @importFrom SingleCellExperiment colData reducedDim
 #' @importFrom magrittr "%>%"
 #' @importFrom ggplot2 ggplot aes geom_point coord_fixed scale_color_manual
 #'   ggtitle theme_bw theme element_blank
