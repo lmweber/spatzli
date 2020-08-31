@@ -1,74 +1,72 @@
 #' plotQCscatter
-#'
+#' 
 #' Plots for quality control (QC)
-#'
+#' 
 #' Functions to generate plots for quality control (QC) purposes.
-#'
-#' This function generates a scatterplot showing a QC metric (e.g. library size
-#' or number of expressed features) vs. number of cells per spot.
-#'
-#'
+#' 
+#' This function generates a scatterplot comparing two QC metrics, e.g. number
+#' of detected features vs. number of cells per spot.
+#' 
+#' 
 #' @param spe Input object (SpatialExperiment or SingleCellExperiment).
-#'
-#' @param cell_count Name of column in colData containing number of cells per
-#'   spot to be plotted on x axis. Default = "cell_count".
-#'
-#' @param metric Name of column in colData containing QC metric to be plotted on
-#'   y axis. Common options are "sum" (usually refers to total library size) and
-#'   "detected" (usually refers to number of expressed features). Default =
-#'   "detected".
-#'
-#' @param threshold If provided, a horizontal line will be drawn at this
-#'   threshold for the metric.
-#'
-#' @param trend Whether to include smoothed trend (loess). Default = FALSE.
-#'
-#' @param marginal Whether to include marginal histograms. Default = FALSE.
-#'
-#'
-#' @return Returns ggplot object containing plot. Returning the plot as an
-#'   object allows users to add additional ggplot elements (e.g. new title or
-#'   different formatting).
-#'
-#'
+#' 
+#' @param metric_x Name of column in colData containing QC metric to plot on
+#'   x-axis (e.g. "cell_count" for number of cells per spot). Default =
+#'   "cell_count".
+#' 
+#' @param metric_y Name of column in colData containing QC metric to plot on
+#'   y-axis (e.g. "sum" for total library size, "detected" for number of
+#'   expressed features). Default = "detected".
+#' 
+#' @param threshold_x If provided, a vertical line will be drawn at this
+#'   x-value. Default = NULL.
+#' 
+#' @param threshold_y If provided, a horizontal line will be drawn at this
+#'   y-value. Default = NULL.
+#' 
+#' @param trend Whether to include a smoothed trend (loess). Default = TRUE.
+#' 
+#' @param marginal Whether to include marginal histograms. Default = TRUE.
+#' 
+#' 
+#' @return Returns a ggplot object. Additional plot elements can be added as
+#'   ggplot elements (e.g. title, formatting).
+#' 
+#' 
 #' @importFrom rlang sym "!!"
 #' @importFrom SingleCellExperiment colData
-#' @importFrom magrittr "%>%"
 #' @importFrom ggplot2 ggplot aes geom_point geom_hline geom_smooth ggtitle
 #'   theme_bw
 #' @importFrom ggExtra ggMarginal
-#'
+#' 
 #' @export
-#'
+#' 
 #' @examples
-#' # TO DO
+#' # to do
 #' 
 plotQCscatter <- function(spe, 
-                          cell_count = "cell_count", metric = "detected", 
-                          threshold = NULL, trend = FALSE, marginal = FALSE) {
+                          metric_x = "cell_count", metric_y = "detected", 
+                          threshold_x = NULL, threshold_y = NULL, 
+                          trend = TRUE, marginal = TRUE) {
   
   # note: using quasiquotation to allow custom variable names in ggplot ("sym" and "!!")
   
-  cell_count <- sym(cell_count)
-  metric <- sym(metric)
+  metric_x <- sym(metric_x)
+  metric_y <- sym(metric_y)
   
-  p <- as.data.frame(colData(spe)) %>% 
-    ggplot(aes(x = !!cell_count, y = !!metric)) + 
+  df <- as.data.frame(colData(spe))
+  
+  p <- ggplot(df, aes(x = !!metric_x, y = !!metric_y)) + 
     geom_point(size = 0.8) + 
-    ggtitle("QC metric vs. number of cells per spot") + 
+    ggtitle(paste0(as.character(metric_y), " vs. ", as.character(metric_x))) + 
     theme_bw()
   
-  if (!is.null(threshold)) {
-    p <- p + geom_hline(yintercept = threshold, color = "red")
-  }
+  if (!is.null(threshold_x)) p <- p + geom_vline(xintercept = threshold_x, color = "red")
+  if (!is.null(threshold_y)) p <- p + geom_hline(yintercept = threshold_y, color = "red")
   
-  if (trend) {
-    p <- p + geom_smooth(method = "loess")
-  }
+  if (trend) p <- p + geom_smooth(method = "loess")
   
-  if (marginal) {
-    p <- ggMarginal(p, type = "histogram")
-  }
+  #if (marginal) p <- ggMarginal(p, type = "histogram")
   
   p
   

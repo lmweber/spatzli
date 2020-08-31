@@ -6,35 +6,38 @@
 \usage{
 plotQCscatter(
   spe,
-  cell_count = "cell_count",
-  metric = "detected",
-  threshold = NULL,
-  trend = FALSE,
-  marginal = FALSE
+  metric_x = "cell_count",
+  metric_y = "detected",
+  threshold_x = NULL,
+  threshold_y = NULL,
+  trend = TRUE,
+  marginal = TRUE
 )
 }
 \arguments{
 \item{spe}{Input object (SpatialExperiment or SingleCellExperiment).}
 
-\item{cell_count}{Name of column in colData containing number of cells per
-spot to be plotted on x axis. Default = "cell_count".}
+\item{metric_x}{Name of column in colData containing QC metric to plot on
+x-axis (e.g. "cell_count" for number of cells per spot). Default =
+"cell_count".}
 
-\item{metric}{Name of column in colData containing QC metric to be plotted on
-y axis. Common options are "sum" (usually refers to total library size) and
-"detected" (usually refers to number of expressed features). Default =
-"detected".}
+\item{metric_y}{Name of column in colData containing QC metric to plot on
+y-axis (e.g. "sum" for total library size, "detected" for number of
+expressed features). Default = "detected".}
 
-\item{threshold}{If provided, a horizontal line will be drawn at this
-threshold for the metric.}
+\item{threshold_x}{If provided, a vertical line will be drawn at this
+x-value. Default = NULL.}
 
-\item{trend}{Whether to include smoothed trend (loess). Default = FALSE.}
+\item{threshold_y}{If provided, a horizontal line will be drawn at this
+y-value. Default = NULL.}
 
-\item{marginal}{Whether to include marginal histograms. Default = FALSE.}
+\item{trend}{Whether to include a smoothed trend (loess). Default = TRUE.}
+
+\item{marginal}{Whether to include marginal histograms. Default = TRUE.}
 }
 \value{
-Returns ggplot object containing plot. Returning the plot as an
-  object allows users to add additional ggplot elements (e.g. new title or
-  different formatting).
+Returns a ggplot object. Additional plot elements can be added as
+  ggplot elements (e.g. title, formatting).
 }
 \description{
 Plots for quality control (QC)
@@ -42,10 +45,10 @@ Plots for quality control (QC)
 \details{
 Functions to generate plots for quality control (QC) purposes.
 
-This function generates a scatterplot showing a QC metric (e.g. library size
-or number of expressed features) vs. number of cells per spot.
+This function generates a scatterplot comparing two QC metrics, e.g. number
+of detected features vs. number of cells per spot.
 }
 \examples{
-# TO DO
+# to do
 
 }
