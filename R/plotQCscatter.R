@@ -58,7 +58,7 @@ plotQCscatter <- function(spe,
   
   p <- ggplot(df, aes(x = !!metric_x, y = !!metric_y)) + 
     geom_point(size = 0.8) + 
-    ggtitle(paste0(as.character(metric_y), " vs. ", as.character(metric_x))) + 
+    ggtitle("QC metrics") + 
     theme_bw()
   
   if (!is.null(threshold_x)) p <- p + geom_vline(xintercept = threshold_x, color = "red")
