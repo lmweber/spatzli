@@ -7,21 +7,20 @@
 plotQCspots(spe, x_coord = "x_coord", y_coord = "y_coord", discard = "discard")
 }
 \arguments{
-\item{spe}{Input object (SpatialExperiment or SingleCellExperiment).}
+\item{spe}{Input object (SingleCellExperiment).}
 
-\item{x_coord}{Name of column in colData containing x coordinates. Default =
+\item{x_coord}{Name of column in colData containing x-coordinates. Default =
 "x_coord".}
 
-\item{y_coord}{Name of column in colData containing y coordinates. Default =
+\item{y_coord}{Name of column in colData containing y-coordinates. Default =
 "y_coord".}
 
-\item{discard}{Name of column containing logical entries identifying spots to
-be discarded. Default = "discard".}
+\item{discard}{Name of column in colData identifying spots to be discarded
+(TRUE/FALSE values). Default = "discard".}
 }
 \value{
-Returns ggplot object containing plot. Returning the plot as an
-  object allows users to add additional ggplot elements (e.g. new title or
-  different formatting).
+Returns a ggplot object. Additional plot elements can be added as
+  ggplot elements (e.g. title, formatting).
 }
 \description{
 Plots for quality control (QC)
@@ -29,10 +28,11 @@ Plots for quality control (QC)
 \details{
 Functions to generate plots for quality control (QC) purposes.
 
-This function generates a plot showing spots to be discarded on the physical
-x-y coordinates of the tissue slide.
+This function generates a plot identifying spots that do not meet QC metrics
+(i.e. spots to be discarded before downstream analysis) on the physical x-y
+coordinates of the tissue slide.
 }
 \examples{
-# TO DO
+# to do
 
 }

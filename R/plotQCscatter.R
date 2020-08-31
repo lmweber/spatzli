@@ -8,7 +8,7 @@
 #' of detected features vs. number of cells per spot.
 #' 
 #' 
-#' @param spe Input object (SpatialExperiment or SingleCellExperiment).
+#' @param spe Input object (SingleCellExperiment).
 #' 
 #' @param metric_x Name of column in colData containing QC metric to plot on
 #'   x-axis (e.g. "cell_count" for number of cells per spot). Default =
@@ -37,7 +37,6 @@
 #' @importFrom SingleCellExperiment colData
 #' @importFrom ggplot2 ggplot aes geom_point geom_hline geom_smooth ggtitle
 #'   theme_bw
-#' @importFrom ggExtra ggMarginal
 #' 
 #' @export
 #' 
@@ -66,7 +65,8 @@ plotQCscatter <- function(spe,
   
   if (trend) p <- p + geom_smooth(method = "loess")
   
-  #if (marginal) p <- ggMarginal(p, type = "histogram")
+  # removed for now since does not return ggplot object
+  # if (marginal) p <- ggMarginal(p, type = "histogram")
   
   p
   

@@ -15,7 +15,7 @@ plotQCscatter(
 )
 }
 \arguments{
-\item{spe}{Input object (SpatialExperiment or SingleCellExperiment).}
+\item{spe}{Input object (SingleCellExperiment).}
 
 \item{metric_x}{Name of column in colData containing QC metric to plot on
 x-axis (e.g. "cell_count" for number of cells per spot). Default =
