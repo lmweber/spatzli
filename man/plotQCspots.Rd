@@ -4,16 +4,21 @@
 \alias{plotQCspots}
 \title{plotQCspots}
 \usage{
-plotQCspots(spe, x_coord = "x_coord", y_coord = "y_coord", discard = "discard")
+plotQCspots(
+  spe,
+  x_coord = "pxl_row_fullres",
+  y_coord = "pxl_col_fullres",
+  discard = "discard"
+)
 }
 \arguments{
-\item{spe}{Input object (SingleCellExperiment).}
+\item{spe}{Input object (SpatialExperiment).}
 
-\item{x_coord}{Name of column in colData containing x-coordinates. Default =
-"x_coord".}
+\item{x_coord}{Name of column in spatialCoords slot containing x-coordinates.
+Default = "pxl_row_fullres".}
 
-\item{y_coord}{Name of column in colData containing y-coordinates. Default =
-"y_coord".}
+\item{y_coord}{Name of column in spatialCoords slot containing x-coordinates.
+Default = "pxl_col_fullres".}
 
 \item{discard}{Name of column in colData identifying spots to be discarded
 (TRUE/FALSE values). Default = "discard".}
@@ -23,14 +28,17 @@ Returns a ggplot object. Additional plot elements can be added as
   ggplot elements (e.g. title, formatting).
 }
 \description{
-Plots for quality control (QC)
+Quality control (QC) plots for spatial transcriptomics datasets.
 }
 \details{
-Functions to generate plots for quality control (QC) purposes.
+Functions to generate quality control (QC) plots for spatial transcriptomics
+datasets.
 
-This function generates a plot identifying spots that do not meet QC metrics
-(i.e. spots to be discarded before downstream analysis) on the physical x-y
-coordinates of the tissue slide.
+This function generates a plot identifying spatial coordinates (spots) that
+do not meet quality control (QC) metrics (i.e. discarded spots). Spots are
+shown in the physical x-y coordinates of the tissue slide. If discarded spots
+correspond to known anatomical/histological or other biological regions of
+interest, this may be problematic for downstream analyses.
 }
 \examples{
 # to do

@@ -1,32 +1,36 @@
 #' plotQCspots
 #' 
-#' Plots for quality control (QC)
+#' Quality control (QC) plots for spatial transcriptomics datasets.
 #' 
-#' Functions to generate plots for quality control (QC) purposes.
+#' Functions to generate quality control (QC) plots for spatial transcriptomics
+#' datasets.
 #' 
-#' This function generates a plot identifying spots that do not meet QC metrics
-#' (i.e. spots to be discarded before downstream analysis) on the physical x-y
-#' coordinates of the tissue slide.
+#' This function generates a plot identifying spatial coordinates (spots) that
+#' do not meet quality control (QC) metrics (i.e. discarded spots). Spots are
+#' shown in the physical x-y coordinates of the tissue slide. If discarded spots
+#' correspond to known anatomical/histological or other biological regions of
+#' interest, this may be problematic for downstream analyses.
 #' 
 #' 
-#' @param spe Input object (SingleCellExperiment).
+#' @param spe Input object (SpatialExperiment).
 #' 
-#' @param x_coord Name of column in colData containing x-coordinates. Default =
-#'   "x_coord".
+#' @param x_coord Name of column in spatialCoords slot containing x-coordinates.
+#'   Default = "pxl_row_fullres".
 #' 
-#' @param y_coord Name of column in colData containing y-coordinates. Default =
-#'   "y_coord".
+#' @param y_coord Name of column in spatialCoords slot containing x-coordinates.
+#'   Default = "pxl_col_fullres".
 #' 
 #' @param discard Name of column in colData identifying spots to be discarded
 #'   (TRUE/FALSE values). Default = "discard".
-#' 
 #' 
 #' @return Returns a ggplot object. Additional plot elements can be added as
 #'   ggplot elements (e.g. title, formatting).
 #' 
 #' 
 #' @importFrom rlang sym "!!"
+#' @importFrom SpatialExperiment spatialCoords
 #' @importFrom SingleCellExperiment colData
+#' @importFrom dplyr full_join
 #' @importFrom ggplot2 ggplot aes geom_point coord_fixed scale_color_manual
 #'   ggtitle theme_bw theme element_blank
 #' 
@@ -36,7 +40,7 @@
 #' # to do
 #' 
 plotQCspots <- function(spe, 
-                        x_coord = "x_coord", y_coord = "y_coord", 
+                        x_coord = "pxl_row_fullres", y_coord = "pxl_col_fullres", 
                         discard = "discard") {
   
   # note: using quasiquotation to allow custom variable names in ggplot ("sym" and "!!")
@@ -45,11 +49,15 @@ plotQCspots <- function(spe,
   y_coord <- sym(y_coord)
   discard <- sym(discard)
   
-  df <- as.data.frame(colData(spe))
+  stopifnot(all(colData(spe)$barcode_id == spatialCoords(spe)$barcode_id))
+  
+  df <- full_join(as.data.frame(colData(spe)), as.data.frame(spatialCoords(spe)), 
+                  by = "barcode_id")
   
   p <- ggplot(df, aes(x = !!x_coord, y = !!y_coord, color = !!discard)) + 
     geom_point(size = 0.5) + 
     coord_fixed() + 
+    scale_y_reverse() + 
     scale_color_manual(values = c("gray85", "red")) + 
     ggtitle("QC: discarded spots") + 
     theme_bw() + 
