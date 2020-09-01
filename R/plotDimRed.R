@@ -1,21 +1,24 @@
-#' plotSpots
+#' plotDimRed
 #' 
 #' Clustering plots for spatial transcriptomics datasets.
 #' 
 #' Functions to generate clustering plots for spatial transcriptomics datasets.
 #' 
-#' This function generates a plot showing spatial coordinates (spots) in
-#' physical x-y coordinates of the tissue slide. Cluster labels or ground truth
-#' labels can be shown with colors.
+#' This function generates a plot showing spatial coordinates (spots) in reduced
+#' dimension space (either PCA or UMAP). Cluster labels or ground truth labels
+#' can be shown with colors.
 #' 
 #' 
 #' @param spe Input object (SpatialExperiment).
 #' 
-#' @param x_coord Name of column in spatialCoords slot containing x-coordinates.
-#'   Default = "pxl_row_fullres".
+#' @param type Type of dimension reduction to use. Options are "PCA" or "UMAP".
+#'   Default = "UMAP".
 #' 
-#' @param y_coord Name of column in spatialCoords slot containing x-coordinates.
-#'   Default = "pxl_col_fullres".
+#' @param x_axis Name of column in reducedDim to use for x-axis. Default =
+#'   "UMAP1".
+#' 
+#' @param y_axis Name of column in reducedDim to use for y-axis. Default =
+#'   "UMAP2".
 #' 
 #' @param cluster_id Name of column in colData containing cluster IDs. To plot
 #'   without cluster labels, set "cluster_id = NULL". Default = "cluster_id".
@@ -30,8 +33,7 @@
 #' 
 #' 
 #' @importFrom rlang sym "!!"
-#' @importFrom SpatialExperiment spatialCoords
-#' @importFrom SingleCellExperiment colData
+#' @importFrom SingleCellExperiment colData reducedDim
 #' @importFrom ggplot2 ggplot aes geom_point coord_fixed scale_color_manual
 #'   ggtitle theme_bw theme element_blank
 #' 
@@ -40,15 +42,16 @@
 #' @examples
 #' # to do
 #' 
-plotSpots <- function(spe, 
-                      x_coord = "pxl_row_fullres", y_coord = "pxl_col_fullres", 
-                      cluster_id = NULL, 
-                      palette = "libd_layer_colors") {
+plotDimRed <- function(spe, 
+                       type = "UMAP", 
+                       x_axis = "UMAP1", y_axis = "UMAP2", 
+                       cluster_id = NULL, 
+                       palette = "libd_layer_colors") {
   
   # note: using quasiquotation to allow custom variable names in ggplot ("sym" and "!!")
   
-  x_coord <- sym(x_coord)
-  y_coord <- sym(y_coord)
+  x_axis <- sym(x_axis)
+  y_axis <- sym(y_axis)
   if (!is.null(cluster_id)) {
     cluster_id <- sym(cluster_id)
   }
@@ -60,16 +63,13 @@ plotSpots <- function(spe,
     palette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
   }
   
-  stopifnot(all(rownames(colData(spe)) == rownames(spatialCoords(spe))))
+  stopifnot(all(rownames(colData(spe)) == rownames(reducedDim(spe, type))))
   
-  # assuming barcode IDs are in first column of both colData and spatialCoords
-  df <- cbind(as.data.frame(colData(spe)), as.data.frame(spatialCoords(spe))[, -1])
+  df <- cbind(as.data.frame(colData(spe)), as.data.frame(reducedDim(spe, type)))
   
-  p <- ggplot(df, aes(x = !!x_coord, y = !!y_coord)) + 
+  p <- ggplot(df, aes(x = !!x_axis, y = !!y_axis)) + 
     geom_point(size = 0.5) + 
-    coord_fixed() + 
-    scale_y_reverse() + 
-    ggtitle("Spatial coordinates (spots)") + 
+    ggtitle(paste0("Reduced dimensions (", type, ")")) + 
     theme_bw() + 
     theme(panel.grid = element_blank(), 
           axis.title = element_blank(), 
