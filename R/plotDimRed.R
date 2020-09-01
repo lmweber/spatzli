@@ -70,9 +70,10 @@ plotDimRed <- function(spe,
   p <- ggplot(df, aes(x = !!x_axis, y = !!y_axis)) + 
     geom_point(size = 0.5) + 
     ggtitle(paste0("Reduced dimensions (", type, ")")) + 
+    xlab(paste0(type, "1")) + 
+    ylab(paste0(type, "2")) + 
     theme_bw() + 
     theme(panel.grid = element_blank(), 
-          axis.title = element_blank(), 
           axis.text = element_blank(), 
           axis.ticks = element_blank())
   
