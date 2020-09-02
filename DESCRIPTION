@@ -11,7 +11,7 @@ biocViews:
 Depends: R (>= 4.0.0)
 Imports:
     SingleCellExperiment, 
-    magrittr, 
+    SpatialExperiment, 
     rlang, 
     ggplot2, 
     ggExtra

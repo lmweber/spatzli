@@ -33,8 +33,8 @@
 #' @importFrom rlang sym "!!"
 #' @importFrom SpatialExperiment spatialCoords
 #' @importFrom SingleCellExperiment colData
-#' @importFrom ggplot2 ggplot aes geom_point coord_fixed scale_color_manual
-#'   ggtitle theme_bw theme element_blank
+#' @importFrom ggplot2 ggplot aes geom_point coord_fixed scale_y_reverse
+#'   scale_color_manual ggtitle theme_bw theme element_blank
 #' 
 #' @export
 #' 

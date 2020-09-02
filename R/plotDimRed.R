@@ -1,45 +1,45 @@
 #' plotDimRed
-#' 
+#'
 #' Plots for spatial transcriptomics datasets.
-#' 
+#'
 #' Functions to generate plots of spatial coordinates for spatial
 #' transcriptomics datasets, optionally including cluster labels.
-#' 
+#'
 #' This function generates a plot showing spatial coordinates (spots) in reduced
 #' dimension space (either PCA or UMAP). Cluster labels or ground truth labels
 #' can be shown with colors.
-#' 
-#' 
+#'
+#'
 #' @param spe Input object (SpatialExperiment).
-#' 
+#'
 #' @param type Type of dimension reduction to use. Options are "PCA" or "UMAP".
 #'   Default = "UMAP".
-#' 
+#'
 #' @param x_axis Name of column in reducedDim to use for x-axis. Default =
 #'   "UMAP1".
-#' 
+#'
 #' @param y_axis Name of column in reducedDim to use for y-axis. Default =
 #'   "UMAP2".
-#' 
+#'
 #' @param cluster_id Name of column in colData containing cluster IDs. To plot
 #'   without cluster labels, set "cluster_id = NULL". Default = "cluster_id".
-#' 
+#'
 #' @param palette Color palette for cluster labels. Options are
 #'   "libd_layer_colors", "Okabe-Ito", or providing a vector of hex codes for a
 #'   custom palette.
-#' 
-#' 
+#'
+#'
 #' @return Returns a ggplot object. Additional plot elements can be added as
 #'   ggplot elements (e.g. title, formatting).
-#' 
-#' 
+#'
+#'
 #' @importFrom rlang sym "!!"
 #' @importFrom SingleCellExperiment colData reducedDim
-#' @importFrom ggplot2 ggplot aes geom_point coord_fixed scale_color_manual
+#' @importFrom ggplot2 ggplot aes geom_point scale_color_manual xlab ylab
 #'   ggtitle theme_bw theme element_blank
-#' 
+#'
 #' @export
-#' 
+#'
 #' @examples
 #' # to do
 #' 
@@ -70,9 +70,9 @@ plotDimRed <- function(spe,
   
   p <- ggplot(df, aes(x = !!x_axis, y = !!y_axis)) + 
     geom_point(size = 0.5) + 
-    ggtitle(paste0("Reduced dimensions (", type, ")")) + 
     xlab(paste0(type, "1")) + 
     ylab(paste0(type, "2")) + 
+    ggtitle(paste0("Reduced dimensions (", type, ")")) + 
     theme_bw() + 
     theme(panel.grid = element_blank(), 
           axis.text = element_blank(), 

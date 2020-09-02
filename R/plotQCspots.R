@@ -30,9 +30,8 @@
 #' @importFrom rlang sym "!!"
 #' @importFrom SpatialExperiment spatialCoords
 #' @importFrom SingleCellExperiment colData
-#' @importFrom dplyr full_join
-#' @importFrom ggplot2 ggplot aes geom_point coord_fixed scale_color_manual
-#'   ggtitle theme_bw theme element_blank
+#' @importFrom ggplot2 ggplot aes geom_point coord_fixed scale_y_reverse
+#'   scale_color_manual ggtitle theme_bw theme element_blank
 #' 
 #' @export
 #' 
@@ -49,10 +48,12 @@ plotQCspots <- function(spe,
   y_coord <- sym(y_coord)
   discard <- sym(discard)
   
+  stopifnot("barcode_id" %in% colnames(colData(spe)))
+  stopifnot("barcode_id" %in% colnames(spatialCoords(spe)))
   stopifnot(all(colData(spe)$barcode_id == spatialCoords(spe)$barcode_id))
   
-  df <- full_join(as.data.frame(colData(spe)), as.data.frame(spatialCoords(spe)), 
-                  by = "barcode_id")
+  ix <- which(colnames(spatialCoords(spe)) == "barcode_id")
+  df <- cbind(as.data.frame(colData(spe)), as.data.frame(spatialCoords(spe))[, -ix])
   
   p <- ggplot(df, aes(x = !!x_coord, y = !!y_coord, color = !!discard)) + 
     geom_point(size = 0.5) + 

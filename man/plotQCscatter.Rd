@@ -7,23 +7,23 @@
 plotQCscatter(
   spe,
   metric_x = "cell_count",
-  metric_y = "detected",
+  metric_y = "sum",
   threshold_x = NULL,
   threshold_y = NULL,
   trend = TRUE,
-  marginal = TRUE
+  marginal = FALSE
 )
 }
 \arguments{
-\item{spe}{Input object (SingleCellExperiment).}
+\item{spe}{Input object (SpatialExperiment).}
 
 \item{metric_x}{Name of column in colData containing QC metric to plot on
 x-axis (e.g. "cell_count" for number of cells per spot). Default =
 "cell_count".}
 
 \item{metric_y}{Name of column in colData containing QC metric to plot on
-y-axis (e.g. "sum" for total library size, "detected" for number of
-expressed features). Default = "detected".}
+y-axis (e.g. "sum" for number of detected transcripts, "detected" for
+number of detected genes). Default = "sum".}
 
 \item{threshold_x}{If provided, a vertical line will be drawn at this
 x-value. Default = NULL.}
@@ -33,20 +33,26 @@ y-value. Default = NULL.}
 
 \item{trend}{Whether to include a smoothed trend (loess). Default = TRUE.}
 
-\item{marginal}{Whether to include marginal histograms. Default = TRUE.}
+\item{marginal}{Whether to include marginal histograms. Note that if TRUE,
+the returned object is no longer a ggplot2 object, and additional ggplot2
+plot elements can no longer be added. Alternatively, marginal histograms
+can be added manually with 'ggMarginal(p, type = "histogram")' (from
+'ggExtra' package). Default = FALSE.}
 }
 \value{
 Returns a ggplot object. Additional plot elements can be added as
   ggplot elements (e.g. title, formatting).
 }
 \description{
-Plots for quality control (QC)
+Quality control (QC) plots for spatial transcriptomics datasets.
 }
 \details{
-Functions to generate plots for quality control (QC) purposes.
+Functions to generate quality control (QC) plots for spatial transcriptomics
+datasets.
 
-This function generates a scatterplot comparing two QC metrics, e.g. number
-of detected features vs. number of cells per spot.
+This function generates a scatterplot comparing two quality control (QC)
+metrics, e.g. number of detected features vs. number of cells per spot. This
+can be used to help select filtering thresholds.
 }
 \examples{
 # to do
