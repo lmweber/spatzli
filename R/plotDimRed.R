@@ -1,8 +1,9 @@
 #' plotDimRed
 #' 
-#' Clustering plots for spatial transcriptomics datasets.
+#' Plots for spatial transcriptomics datasets.
 #' 
-#' Functions to generate clustering plots for spatial transcriptomics datasets.
+#' Functions to generate plots of spatial coordinates for spatial
+#' transcriptomics datasets, optionally including cluster labels.
 #' 
 #' This function generates a plot showing spatial coordinates (spots) in reduced
 #' dimension space (either PCA or UMAP). Cluster labels or ground truth labels
