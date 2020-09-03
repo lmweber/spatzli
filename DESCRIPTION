@@ -10,8 +10,11 @@ biocViews:
     SingleCell
 Depends: R (>= 4.0.0)
 Imports:
-    SingleCellExperiment, 
     SpatialExperiment, 
+    SingleCellExperiment, 
+    SummarizedExperiment, 
+    kernlab, 
+    methods, 
     rlang, 
     ggplot2, 
     ggExtra
