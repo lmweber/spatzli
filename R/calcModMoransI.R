@@ -103,9 +103,10 @@ calcModMoransI <- function(spe, l_prop = 0.1, weights_min = 0.01,
   
   # initialize with zeros since many genes have all values equal to zero; skip
   # calculations for these genes
-  stat <- rep(0, nrow(x))
-  means <- rep(0, nrow(x))
   n_nonzero <- rep(0, nrow(x))
+  means <- rep(0, nrow(x))
+  vars <- rep(0, nrow(x))
+  stats <- rep(0, nrow(x))
   
   # convert weights to non-sparse format (but still in flattened format) for
   # faster multiplication inside loop
@@ -143,9 +144,10 @@ calcModMoransI <- function(spe, l_prop = 0.1, weights_min = 0.01,
       # sum and divide by weights
       wyy_i_scaled <- sum(wyy_i) / tot_weights_keep
       # variance (for non-zero points only)
-      var <- sum((yy_i@x)^2) / n_nonzero_i
+      var_i <- sum((yy_i@x)^2) / n_nonzero_i
+      vars[i] <- var_i
       # divide by variance
-      stat[i] <- wyy_i_scaled / var
+      stats[i] <- wyy_i_scaled / var_i
     }
   })
   
@@ -154,9 +156,10 @@ calcModMoransI <- function(spe, l_prop = 0.1, weights_min = 0.01,
   
   # return output
   list(
-    stat = stat, 
-    means = means, 
     n_nonzero = n_nonzero, 
+    means = means, 
+    vars = vars, 
+    stats = stats, 
     runtime = runtime[["elapsed"]]
   )
   
