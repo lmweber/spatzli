@@ -106,6 +106,7 @@ calcModMoransI <- function(spe, l_prop = 0.1, weights_min = 0.01,
   n_nonzero <- rep(0, nrow(x))
   means <- rep(0, nrow(x))
   vars <- rep(0, nrow(x))
+  stats_novar <- rep(0, nrow(x))
   stats <- rep(0, nrow(x))
   
   # convert weights to non-sparse format (but still in flattened format) for
@@ -143,6 +144,7 @@ calcModMoransI <- function(spe, l_prop = 0.1, weights_min = 0.01,
       tot_weights_keep <- sum(weights_keep)
       # sum and divide by weights
       wyy_i_scaled <- sum(wyy_i) / tot_weights_keep
+      stats_novar[i] <- wyy_i_scaled
       # variance (for non-zero points only)
       var_i <- sum((yy_i@x)^2) / n_nonzero_i
       vars[i] <- var_i
@@ -158,6 +160,7 @@ calcModMoransI <- function(spe, l_prop = 0.1, weights_min = 0.01,
   list(
     n_nonzero = n_nonzero, 
     means = means, 
+    stats_novar = stats_novar, 
     vars = vars, 
     stats = stats, 
     runtime = runtime[["elapsed"]]
