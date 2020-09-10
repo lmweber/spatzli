@@ -6,8 +6,8 @@
 \usage{
 plotQCspots(
   spe,
-  x_coord = "pxl_row_fullres",
-  y_coord = "pxl_col_fullres",
+  x_coord = "pxl_row_in_fullres",
+  y_coord = "pxl_col_in_fullres",
   discard = "discard"
 )
 }
@@ -15,10 +15,10 @@ plotQCspots(
 \item{spe}{Input object (SpatialExperiment).}
 
 \item{x_coord}{Name of column in spatialCoords slot containing x-coordinates.
-Default = "pxl_row_fullres".}
+Default = "pxl_row_in_fullres".}
 
 \item{y_coord}{Name of column in spatialCoords slot containing x-coordinates.
-Default = "pxl_col_fullres".}
+Default = "pxl_col_in_fullres".}
 
 \item{discard}{Name of column in colData identifying spots to be discarded
 (TRUE/FALSE values). Default = "discard".}

@@ -8,8 +8,8 @@ calcModMoransI(
   spe,
   l_prop = 0.1,
   weights_min = 0.01,
-  x_coord = "pxl_row_fullres",
-  y_coord = "pxl_col_fullres",
+  x_coord = "pxl_row_in_fullres",
+  y_coord = "pxl_col_in_fullres",
   verbose = FALSE
 )
 }
@@ -28,10 +28,10 @@ covariance matrix) that are below "weights_min" times the maximum weights
 value are assumed to be zero.}
 
 \item{x_coord}{Name of column in spatialCoords slot containing x-coordinates.
-Default = "pxl_row_fullres".}
+Default = "pxl_row_in_fullres".}
 
 \item{y_coord}{Name of column in spatialCoords slot containing x-coordinates.
-Default = "pxl_col_fullres".}
+Default = "pxl_col_in_fullres".}
 
 \item{verbose}{Whether to print messages. Default = FALSE.}
 }

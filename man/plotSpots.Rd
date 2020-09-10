@@ -6,8 +6,8 @@
 \usage{
 plotSpots(
   spe,
-  x_coord = "pxl_row_fullres",
-  y_coord = "pxl_col_fullres",
+  x_coord = "pxl_row_in_fullres",
+  y_coord = "pxl_col_in_fullres",
   cluster_id = NULL,
   palette = "libd_layer_colors"
 )
@@ -16,10 +16,10 @@ plotSpots(
 \item{spe}{Input object (SpatialExperiment).}
 
 \item{x_coord}{Name of column in spatialCoords slot containing x-coordinates.
-Default = "pxl_row_fullres".}
+Default = "pxl_row_in_fullres".}
 
 \item{y_coord}{Name of column in spatialCoords slot containing x-coordinates.
-Default = "pxl_col_fullres".}
+Default = "pxl_col_in_fullres".}
 
 \item{cluster_id}{Name of column in colData containing cluster IDs. To plot
 without cluster labels, set "cluster_id = NULL". Default = "cluster_id".}
