@@ -69,7 +69,7 @@ calcModMoransI <- function(spe, l_prop = 0.1, weights_min = 0.01,
   # length parameter equal to 'l_prop * max range of x or y coordinates'
   
   # get x-y coordinates
-  xy_coords <- as.matrix(spatialCoords(spe)[, c("pxl_row_in_fullres", "pxl_col_in_fullres")])
+  xy_coords <- as.matrix(spatialCoords(spe)[, c(x_coord, y_coord)])
   # calculate characteristic length parameter
   l_default <- max(c(abs(diff(range(xy_coords[, 1]))), abs(diff(range(xy_coords[, 2]))))) * l_prop
   # change to alternative parameterization for RBF kernel used in kernlab package
