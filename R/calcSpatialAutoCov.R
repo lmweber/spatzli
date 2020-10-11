@@ -32,7 +32,7 @@
 #'   Default = "pxl_col_in_fullres".
 #' 
 #' @param max_cores Maximum number of cores to use for parallelized evaluation.
-#'   Default = 8.
+#'   Default = 4.
 #' 
 #' @param verbose Whether to print messages. Default = FALSE.
 #' 
