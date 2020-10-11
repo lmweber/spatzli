@@ -15,6 +15,7 @@ Imports:
     SummarizedExperiment, 
     kernlab, 
     BiocParallel, 
+    Matrix, 
     matrixStats, 
     methods, 
     rlang, 

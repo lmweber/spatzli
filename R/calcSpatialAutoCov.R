@@ -45,6 +45,7 @@
 #' @importFrom kernlab rbfdot kernelMatrix
 #' @importFrom parallel detectCores
 #' @importFrom BiocParallel bpparam bplapply
+#' @importFrom Matrix rowSums
 #' @importFrom matrixStats rowVars
 #' @importFrom methods as
 #' 
