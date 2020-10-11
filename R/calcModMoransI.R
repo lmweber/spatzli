@@ -87,6 +87,7 @@ calcModMoransI <- function(spe, l_prop = 0.1, weights_min = 0.01,
                    round(mean(weights < thresh) * 100), 
                    "% of values in weights matrix assumed to be zero"))
   }
+  weights[weights < thresh] <- 0
   
   # convert weights matrix to sparse flattened vector
   weights <- matrix(as.vector(weights), nrow = 1)
