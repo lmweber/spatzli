@@ -10,6 +10,7 @@ calcSpatialAutoCov(
   weights_min = 0.05,
   x_coord = "pxl_row_in_fullres",
   y_coord = "pxl_col_in_fullres",
+  max_cores = 4,
   verbose = FALSE
 )
 }
@@ -32,6 +33,9 @@ Default = "pxl_row_in_fullres".}
 
 \item{y_coord}{Name of column in spatialCoords slot containing y-coordinates.
 Default = "pxl_col_in_fullres".}
+
+\item{max_cores}{Maximum number of cores to use for parallelized evaluation.
+Default = 8.}
 
 \item{verbose}{Whether to print messages. Default = FALSE.}
 }

@@ -14,6 +14,8 @@ Imports:
     SingleCellExperiment, 
     SummarizedExperiment, 
     kernlab, 
+    BiocParallel, 
+    matrixStats, 
     methods, 
     rlang, 
     ggplot2, 

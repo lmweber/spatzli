@@ -31,6 +31,9 @@
 #' @param y_coord Name of column in spatialCoords slot containing y-coordinates.
 #'   Default = "pxl_col_in_fullres".
 #' 
+#' @param max_cores Maximum number of cores to use for parallelized evaluation.
+#'   Default = 8.
+#' 
 #' @param verbose Whether to print messages. Default = FALSE.
 #' 
 #' 
@@ -40,6 +43,9 @@
 #' @importFrom SingleCellExperiment logcounts
 #' @importFrom SummarizedExperiment assayNames
 #' @importFrom kernlab rbfdot kernelMatrix
+#' @importFrom parallel detectCores
+#' @importFrom BiocParallel bpparam bplapply
+#' @importFrom matrixStats rowVars
 #' @importFrom methods as
 #' 
 #' @export
@@ -49,7 +55,7 @@
 #' 
 calcSpatialAutoCov <- function(spe, l_prop = 0.2, weights_min = 0.05, 
                                x_coord = "pxl_row_in_fullres", y_coord = "pxl_col_in_fullres", 
-                               verbose = FALSE) {
+                               max_cores = 4, verbose = FALSE) {
   
   stopifnot("logcounts" %in% assayNames(spe))
   
@@ -83,7 +89,6 @@ calcSpatialAutoCov <- function(spe, l_prop = 0.2, weights_min = 0.05,
   
   # convert weights matrix to flattened vector
   weights_vec <- matrix(as.vector(weights), nrow = 1)
-  weights_sum <- sum(weights_vec)
   
   
   # --------------------------------
@@ -92,40 +97,59 @@ calcSpatialAutoCov <- function(spe, l_prop = 0.2, weights_min = 0.05,
   
   # several tricks here to speed up runtime
   
+  # parallelizable function to calculate statistic for gene i
+  calc_i <- function(i, x, w) {
+    if (verbose) print(i)
+    # subset gene i and convert to non-sparse format (note: drop = FALSE can 
+    # keep sparse format if required)
+    x_i <- x[i, ]
+    # mean expression for gene i (including zeros)
+    mean_i <- mean(x_i)
+    # subtract mean
+    y_i <- x_i - mean_i
+    # calculate Kronecker product (mathematically equivalent to flattened 
+    # version of outer product but much faster to calculate; note this is the 
+    # slowest part of the calculation)
+    yy_i <- as.numeric(kronecker(y_i, y_i))
+    # multiply by flattened weights vector
+    yy_i_w <- yy_i * w
+    # sum values (don't divide by sum of weights here, since values approach 
+    # machine precision)
+    stat_i <- sum(yy_i_w)
+    stat_i
+  }
+  
+  # expression values
   x <- logcounts(spe)
+  # remove genes with all values equal to zero (for faster runtime)
+  zeros <- rowSums(x) == 0
+  x_nonzero <- x[!zeros, , drop = FALSE]
+  n_genes_nonzero <- nrow(x_nonzero)
   
-  # initialize with zeros since many genes have all values equal to zero; skip
-  # calculations for these genes
-  n_genes <- nrow(x)
-  means <- rep(0, n_genes)
-  stats <- rep(0, n_genes)
+  # number of cores
+  n_cores <- min(detectCores(), max_cores)
+  BPPARAM <- bpparam()
+  if (BPPARAM$workers < n_cores) {
+    BPPARAM$workers <- n_cores
+  }
   
-  # calculate for each gene
+  # calculate values using parallelized function
   runtime <- system.time({
-    for (i in seq_len(n_genes)) {
-      if (verbose) print(i)
-      # subset gene i and convert to non-sparse format (note: drop = FALSE can 
-      # keep sparse format if required)
-      x_i <- x[i, ]
-      # if all values equal to zero then skip to next gene (for faster runtime)
-      if (sum(x_i) == 0) next
-      # mean expression for gene i (including zeros)
-      mean_i <- mean(x_i)
-      means[i] <- mean_i
-      # subtract mean
-      y_i <- x_i - mean_i
-      # calculate Kronecker product (mathematically equivalent to flattened 
-      # version of outer product but much faster to calculate; note this is the 
-      # slowest part of the loop)
-      yy_i <- as.numeric(kronecker(y_i, y_i))
-      # multiply by flattened weights vector
-      yy_i_w <- yy_i * weights_vec
-      # sum values (don't divide by sum of weights, since values approach 
-      # machine precision)
-      stat_i <- sum(yy_i_w)
-      stats[i] <- stat_i
-    }
+    stats_nonzero <- bplapply(1:n_genes_nonzero, calc_i, 
+                              x = x_nonzero, w = weights_vec, 
+                              BPPARAM = BPPARAM)
   })
+  
+  # return values in full-length vectors (including zeros for genes with all 
+  # values equal to zero)
+  n_genes <- nrow(x)
+  stats <- rep(0, n_genes)
+  stats[!zeros] <- unlist(stats_nonzero)
+  
+  # other values to return
+  means <- rowMeans(as.matrix(x))
+  vars <- rowVars(as.matrix(x))
+  weights_sum <- sum(weights_vec)
   
   # display runtime
   if (verbose) message(paste0("runtime: ", round(runtime[["elapsed"]]), " seconds"))
@@ -134,6 +158,7 @@ calcSpatialAutoCov <- function(spe, l_prop = 0.2, weights_min = 0.05,
   list(
     n_genes = n_genes, 
     means = means, 
+    vars = vars, 
     stats = stats, 
     weights = weights, 
     weights_sum = weights_sum, 
