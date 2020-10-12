@@ -111,8 +111,9 @@ calcSpatialAutoCov <- function(spe, l_prop = 0.2, weights_min = 0.05,
     y_i <- x_i - mean_i
     # calculate Kronecker product (mathematically equivalent to flattened 
     # version of outer product but much faster to calculate; note this is the 
-    # slowest part of the calculation)
-    yy_i <- as.numeric(kronecker(y_i, y_i))
+    # slowest part of the calculation, could possibly optimize using sparsity)
+    yy_i <- kronecker(y_i, y_i)
+    yy_i <- as.numeric(yy_i)
     # multiply by flattened weights vector
     yy_i_w <- yy_i * w
     # sum values (don't divide by sum of weights here, since values approach 
