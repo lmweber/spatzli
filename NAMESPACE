@@ -2,6 +2,7 @@
 
 export(calcModMoransI)
 export(calcSpatialAutoCov)
+export(calcSpatialContiguity)
 export(plotDimRed)
 export(plotQCbar)
 export(plotQCscatter)
