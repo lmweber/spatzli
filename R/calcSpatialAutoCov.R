@@ -85,7 +85,7 @@ calcSpatialAutoCov <- function(spe, l_prop = 0.2, weights_min = 0.05,
   thresh <- weights_min * max(weights)
   if (verbose) {
     message(paste0("sparsity preserving assumption: ", 
-                   round(mean(weights < thresh) * 100), 
+                   round(mean(weights < thresh) * 100, 1), 
                    "% of values in weights matrix assumed to be zero"))
   }
   weights[weights < thresh] <- 0
