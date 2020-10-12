@@ -11,7 +11,7 @@ calcSpatialAutoCov(
   x_coord = "pxl_row_in_fullres",
   y_coord = "pxl_col_in_fullres",
   max_cores = 4,
-  verbose = FALSE
+  verbose = TRUE
 )
 }
 \arguments{
@@ -37,7 +37,7 @@ Default = "pxl_col_in_fullres".}
 \item{max_cores}{Maximum number of cores to use for parallelized evaluation.
 Default = 4.}
 
-\item{verbose}{Whether to print messages. Default = FALSE.}
+\item{verbose}{Whether to print messages. Default = TRUE.}
 }
 \value{
 Returns a list containing output values (one value per gene).

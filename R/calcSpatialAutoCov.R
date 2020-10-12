@@ -34,7 +34,7 @@
 #' @param max_cores Maximum number of cores to use for parallelized evaluation.
 #'   Default = 4.
 #' 
-#' @param verbose Whether to print messages. Default = FALSE.
+#' @param verbose Whether to print messages. Default = TRUE.
 #' 
 #' 
 #' @return Returns a list containing output values (one value per gene).
@@ -56,7 +56,7 @@
 #' 
 calcSpatialAutoCov <- function(spe, l_prop = 0.2, weights_min = 0.05, 
                                x_coord = "pxl_row_in_fullres", y_coord = "pxl_col_in_fullres", 
-                               max_cores = 4, verbose = FALSE) {
+                               max_cores = 4, verbose = TRUE) {
   
   stopifnot("logcounts" %in% assayNames(spe))
   
@@ -100,7 +100,6 @@ calcSpatialAutoCov <- function(spe, l_prop = 0.2, weights_min = 0.05,
   
   # parallelizable function to calculate statistic for gene i
   calc_i <- function(i, x, w) {
-    if (verbose) print(i)
     # subset gene i and convert to non-sparse format (note: drop = FALSE can 
     # keep sparse format if required)
     x_i <- x[i, ]
