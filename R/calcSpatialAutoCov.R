@@ -162,7 +162,7 @@ calcSpatialAutoCov <- function(spe, l_prop = 0.2, weights_min = 0.05,
     stats = stats, 
     weights = weights, 
     weights_sum = weights_sum, 
-    runtime = runtime[["elapsed"]]
+    runtime = runtime
   )
   
 }
