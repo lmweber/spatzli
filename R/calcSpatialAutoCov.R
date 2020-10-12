@@ -77,6 +77,8 @@ calcSpatialAutoCov <- function(spe, l_prop = 0.2, weights_min = 0.05,
   kernel_rbf <- rbfdot(sigma = sigma_default)
   # calculate kernel weights matrix using kernlab package (fast)
   weights <- kernelMatrix(kernel_rbf, xy_coords)
+  # set diagonal entries of weights matrix to zero
+  diag(weights) <- 0
   
   # sparsity-preserving assumption: assume weights below the threshold (i.e.
   # 'weights_min * max weights value') are equal to zero
