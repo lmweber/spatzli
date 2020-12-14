@@ -21,5 +21,5 @@ Functions for:
 
 Work in progress:
 
-- spatial clustering
+- spatially resolved clustering
 
