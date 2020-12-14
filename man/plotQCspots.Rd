@@ -4,21 +4,16 @@
 \alias{plotQCspots}
 \title{plotQCspots}
 \usage{
-plotQCspots(
-  spe,
-  x_coord = "pxl_row_in_fullres",
-  y_coord = "pxl_col_in_fullres",
-  discard = "discard"
-)
+plotQCspots(spe, x_coord = "x_coord", y_coord = "y_coord", discard = "discard")
 }
 \arguments{
 \item{spe}{Input object (SpatialExperiment).}
 
 \item{x_coord}{Name of column in spatialCoords slot containing x-coordinates.
-Default = "pxl_row_in_fullres".}
+Default = "x_coord".}
 
 \item{y_coord}{Name of column in spatialCoords slot containing x-coordinates.
-Default = "pxl_col_in_fullres".}
+Default = "y_coord".}
 
 \item{discard}{Name of column in colData identifying spots to be discarded
 (TRUE/FALSE values). Default = "discard".}
