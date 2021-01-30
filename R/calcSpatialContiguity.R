@@ -53,7 +53,7 @@
 #' @examples
 #' # to do
 #' 
-calcSpatialContiguity <- function(spe, l_prop = 0.2, weights_min = 0.05, 
+calcSpatialContiguity <- function(spe, l_prop = 0.1, weights_min = 0.01, 
                                   x_coord = "pxl_row_in_fullres", y_coord = "pxl_col_in_fullres", 
                                   max_cores = 4, verbose = TRUE) {
   
@@ -69,10 +69,9 @@ calcSpatialContiguity <- function(spe, l_prop = 0.2, weights_min = 0.05,
   # get x-y coordinates
   xy_coords <- as.matrix(spatialCoords(spe)[, c(x_coord, y_coord)])
   # calculate characteristic length parameter
-  #l_default <- max(c(abs(diff(range(xy_coords[, 1]))), abs(diff(range(xy_coords[, 2]))))) * l_prop
-  # change to alternative parameterization for RBF kernel used in kernlab package
-  #sigma_default <- 1 / (2 * l_default^2)
-  sigma_default <- 1
+  l_default <- max(c(abs(diff(range(xy_coords[, 1]))), abs(diff(range(xy_coords[, 2]))))) * l_prop
+  # change to alternative parameterization for Laplacian kernel in kernlab package
+  sigma_default <- 1 / l_default
   # define kernel function
   kernel_rbf <- laplacedot(sigma = sigma_default)
   # calculate kernel weights matrix using kernlab package (fast)

@@ -6,8 +6,8 @@
 \usage{
 calcSpatialContiguity(
   spe,
-  l_prop = 0.2,
-  weights_min = 0.05,
+  l_prop = 0.1,
+  weights_min = 0.01,
   x_coord = "pxl_row_in_fullres",
   y_coord = "pxl_col_in_fullres",
   max_cores = 4,
