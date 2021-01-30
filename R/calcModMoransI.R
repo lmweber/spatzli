@@ -47,7 +47,7 @@
 #' 
 #' @importFrom SingleCellExperiment logcounts
 #' @importFrom SummarizedExperiment assayNames
-#' @importFrom kernlab rbfdot kernelMatrix
+#' @importFrom kernlab laplacedot kernelMatrix
 #' @importFrom methods as
 #' 
 #' @export

@@ -42,7 +42,7 @@
 #' 
 #' @importFrom SingleCellExperiment logcounts
 #' @importFrom SummarizedExperiment assayNames
-#' @importFrom kernlab rbfdot kernelMatrix
+#' @importFrom kernlab laplacedot kernelMatrix
 #' @importFrom parallel detectCores
 #' @importFrom BiocParallel bpparam bplapply
 #' @importFrom Matrix rowSums
