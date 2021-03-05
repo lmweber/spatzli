@@ -10,10 +10,10 @@ plotQCspots(spe, x_coord = "x", y_coord = "y", discard = "discard")
 \item{spe}{Input object (SpatialExperiment).}
 
 \item{x_coord}{Name of column in spatialCoords slot containing x-coordinates.
-Default = "x_coord".}
+Default = "x".}
 
 \item{y_coord}{Name of column in spatialCoords slot containing x-coordinates.
-Default = "y_coord".}
+Default = "y".}
 
 \item{discard}{Name of column in colData identifying spots to be discarded
 (TRUE/FALSE values). Default = "discard".}

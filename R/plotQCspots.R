@@ -15,10 +15,10 @@
 #' @param spe Input object (SpatialExperiment).
 #' 
 #' @param x_coord Name of column in spatialCoords slot containing x-coordinates.
-#'   Default = "x_coord".
+#'   Default = "x".
 #' 
 #' @param y_coord Name of column in spatialCoords slot containing x-coordinates.
-#'   Default = "y_coord".
+#'   Default = "y".
 #' 
 #' @param discard Name of column in colData identifying spots to be discarded
 #'   (TRUE/FALSE values). Default = "discard".
@@ -44,15 +44,14 @@ plotQCspots <- function(spe,
   
   # note: using quasiquotation to allow custom variable names in ggplot ("sym" and "!!")
   
-  x_coord <- sym(x_coord)
-  y_coord <- sym(y_coord)
-  discard <- sym(discard)
+  x_coord_sym <- sym(x_coord)
+  y_coord_sym <- sym(y_coord)
+  discard_sym <- sym(discard)
   
-  stopifnot("barcode_id" %in% colnames(colData(spe)))
+  df_plot <- as.data.frame(colData(spe))
   
-  df <- as.data.frame(colData(spe))
-  
-  p <- ggplot(df, aes(x = !!x_coord, y = !!y_coord, color = !!discard)) + 
+  p <- ggplot(df_plot, aes(x = !!x_coord_sym, y = !!y_coord_sym, 
+                           color = !!discard_sym)) + 
     geom_point(size = 0.5) + 
     coord_fixed() + 
     scale_color_manual(values = c("gray85", "red")) + 
