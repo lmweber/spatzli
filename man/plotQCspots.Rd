@@ -4,7 +4,7 @@
 \alias{plotQCspots}
 \title{plotQCspots}
 \usage{
-plotQCspots(spe, x_coord = "x_coord", y_coord = "y_coord", discard = "discard")
+plotQCspots(spe, x_coord = "x", y_coord = "y", discard = "discard")
 }
 \arguments{
 \item{spe}{Input object (SpatialExperiment).}

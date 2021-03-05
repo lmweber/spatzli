@@ -39,7 +39,7 @@
 #' # to do
 #' 
 plotQCspots <- function(spe, 
-                        x_coord = "x_coord", y_coord = "y_coord", 
+                        x_coord = "x", y_coord = "y", 
                         discard = "discard") {
   
   # note: using quasiquotation to allow custom variable names in ggplot ("sym" and "!!")
