@@ -28,7 +28,7 @@
 #' 
 #' 
 #' @importFrom rlang sym "!!"
-#' @importFrom SpatialExperiment spatialCoords
+#' @importFrom SpatialExperiment spatialData
 #' @importFrom SingleCellExperiment colData
 #' @importFrom ggplot2 ggplot aes geom_point coord_fixed scale_y_reverse
 #'   scale_color_manual ggtitle theme_bw theme element_blank
@@ -48,7 +48,7 @@ plotQCspots <- function(spe,
   y_coord_sym <- sym(y_coord)
   discard_sym <- sym(discard)
   
-  df_plot <- as.data.frame(colData(spe))
+  df_plot <- as.data.frame(cbind(colData(spe), spatialData(spe)))
   
   p <- ggplot(df_plot, aes(x = !!x_coord_sym, y = !!y_coord_sym, 
                            color = !!discard_sym)) + 
