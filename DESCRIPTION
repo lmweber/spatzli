@@ -19,8 +19,7 @@ Imports:
     matrixStats, 
     methods, 
     rlang, 
-    ggplot2, 
-    ggExtra
+    ggplot2
 VignetteBuilder: knitr
 Suggests:
     BiocStyle,
