@@ -101,11 +101,12 @@ rankSVGsNNGP <- function(spe, filter_counts = 5,
     # return sum of absolute values of medians of posterior samples of spatial random effects
     list(
       stat = sum(abs(rowMedians(out_i$p.w.samples))), 
-      runtime = out_i$run.time
+      runtime = out_i$run.time[["elapsed"]]
     )
   }, BPPARAM = MulticoreParam(workers = n_threads))
   
   # collapse list
+  stopifnot(length(out_spnngp) == length(ix_keep))
   mat_spnngp <- do.call("rbind", out_spnngp)
   mat_spnngp <- apply(mat_spnngp, 2, as.numeric)
   stopifnot(nrow(mat_spnngp) == length(ix_keep))
