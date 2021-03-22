@@ -20,7 +20,8 @@ Imports:
     Matrix, 
     methods, 
     rlang, 
-    ggplot2
+    ggplot2, 
+    ggExtra
 VignetteBuilder: knitr
 Suggests:
     BiocStyle,
