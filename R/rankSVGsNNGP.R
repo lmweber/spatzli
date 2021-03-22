@@ -31,7 +31,7 @@
 #' 
 #' @importFrom SpatialExperiment spatialCoords
 #' @importFrom SingleCellExperiment logcounts counts
-#' @importFrom SummarizedExperiment rowData
+#' @importFrom SummarizedExperiment rowData 'rowData<-'
 #' @importFrom BiocParallel bplapply MulticoreParam
 #' @importFrom spNNGP spNNGP
 #' @importFrom matrixStats rowMedians
@@ -72,7 +72,7 @@ rankSVGsNNGP <- function(spe, filter_counts = 5,
   # fit models and calculate statistics and rankings per gene
   # ---------------------------------------------------------
   
-  y <- logcounts(spe_sub)
+  y <- logcounts(spe)
   
   coords <- spatialCoords(spe)
   # scale coordinates
