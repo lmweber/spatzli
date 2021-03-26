@@ -13,6 +13,7 @@ Imports:
     SpatialExperiment, 
     SingleCellExperiment, 
     SummarizedExperiment, 
+    BRISC, 
     spNNGP, 
     matrixStats, 
     BiocParallel, 
