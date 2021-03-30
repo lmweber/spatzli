@@ -79,6 +79,7 @@ rankSVGsBRISC <- function(spe, filter_counts = 5,
   
   coords <- spatialCoords(spe)
   # scale coordinates
+  # to do: scale proportionally
   coords <- apply(coords, 2, function(col) (col - min(col)) / (max(col) - min(col)))
   
   # parallelized
@@ -102,8 +103,8 @@ rankSVGsBRISC <- function(spe, filter_counts = 5,
   )
   
   # calculate reversed ranks on sigma.sq
-  rank_brisc <- rank(-1 * mat_brisc[, "sigma.sq"])
-  mat_brisc <- cbind(mat_brisc, rank_brisc = rank_brisc)
+  rank_sigma.sq <- rank(-1 * mat_brisc[, "sigma.sq"])
+  mat_brisc <- cbind(mat_brisc, rank_sigma.sq = rank_sigma.sq)
   
   # match to correct rows and store in rowData
   mat_brisc_all <- matrix(NA, nrow = nrow(spe), ncol = ncol(mat_brisc))
