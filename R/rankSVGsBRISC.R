@@ -10,6 +10,12 @@
 #' @param spe Input object (SpatialExperiment). Assumed to contain "logcounts"
 #'   assay and spatial coordinates retrievable as "spatialCoords".
 #' 
+#' @param x Matrix of covariates for "BRISC_estimation()". Number of rows must
+#'   equal number of spots. See "?BRISC_estimation" for details. Default = NULL
+#'   (intercept-only model).
+#' 
+#' @param n.neighbors Number of nearest neighbors for BRISC. Default = 15.
+#' 
 #' @param filter_counts Filter out zero-expressed and low-expressed genes by
 #'   keeping genes with at least this number of UMI counts in at least one spot.
 #'   Default = 5.
@@ -22,8 +28,6 @@
 #'   TRUE". Default = "gene_name".
 #' 
 #' @param n_threads Number of threads for parallelization. Default = 4.
-#' 
-#' @param n.neighbors Number of nearest neighbors for BRISC. Default = 15.
 #' 
 #' @param ... Additional arguments to pass to "BRISC_estimation()".
 #' 
@@ -44,12 +48,14 @@
 #' @examples
 #' # to do
 #' 
-rankSVGsBRISC <- function(spe, filter_counts = 5, 
-                          filter_mito = TRUE, gene_name = "gene_name", 
-                          n_threads = 4, n.neighbors = 15, ...) {
+rankSVGsBRISC <- function(spe, x = NULL, n.neighbors = 15, 
+                          filter_counts = 5, filter_mito = TRUE, gene_name = "gene_name", 
+                          n_threads = 4, ...) {
   
   if (!("logcounts" %in% assayNames(spe))) stop("input object must contain 'logcounts' assay")
   if (!("counts" %in% assayNames(spe))) stop("input object must contain 'counts' assay")
+  
+  if (!is.null(x)) stopifnot(nrow(x) == ncol(spe))
   
   # ---------
   # filtering
@@ -85,7 +91,7 @@ rankSVGsBRISC <- function(spe, filter_counts = 5,
   # parallelized
   out_brisc <- bplapply(ix_keep, function(i) {
     # fit intercept-only model for each gene, using mostly default parameters
-    out_i <- BRISC_estimation(coords = coords, y = y[i, ], x = NULL, n.neighbors = n.neighbors, 
+    out_i <- BRISC_estimation(coords = coords, y = y[i, ], x = x, n.neighbors = n.neighbors, 
                               n_omp = 1, verbose = FALSE, ...)
     # return estimated parameters and runtime
     c(out_i$Theta, runtime = out_i$estimation.time[["elapsed"]])

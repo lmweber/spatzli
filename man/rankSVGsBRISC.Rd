@@ -6,17 +6,24 @@
 \usage{
 rankSVGsBRISC(
   spe,
+  x = NULL,
+  n.neighbors = 15,
   filter_counts = 5,
   filter_mito = TRUE,
   gene_name = "gene_name",
   n_threads = 4,
-  n.neighbors = 15,
   ...
 )
 }
 \arguments{
 \item{spe}{Input object (SpatialExperiment). Assumed to contain "logcounts"
 assay and spatial coordinates retrievable as "spatialCoords".}
+
+\item{x}{Matrix of covariates for "BRISC_estimation()". Number of rows must
+equal number of spots. See "?BRISC_estimation" for details. Default = NULL
+(intercept-only model).}
+
+\item{n.neighbors}{Number of nearest neighbors for BRISC. Default = 15.}
 
 \item{filter_counts}{Filter out zero-expressed and low-expressed genes by
 keeping genes with at least this number of UMI counts in at least one spot.
@@ -30,8 +37,6 @@ but are often not of primary biological interest.) Default = TRUE.}
 TRUE". Default = "gene_name".}
 
 \item{n_threads}{Number of threads for parallelization. Default = 4.}
-
-\item{n.neighbors}{Number of nearest neighbors for BRISC. Default = 15.}
 
 \item{...}{Additional arguments to pass to "BRISC_estimation()".}
 }
