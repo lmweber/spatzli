@@ -40,6 +40,7 @@
 #' @importFrom SpatialExperiment spatialCoords
 #' @importFrom SingleCellExperiment logcounts counts
 #' @importFrom SummarizedExperiment rowData 'rowData<-'
+#' @importFrom Matrix rowMeans
 #' @importFrom BiocParallel bplapply MulticoreParam
 #' @importFrom BRISC BRISC_estimation
 #' 
