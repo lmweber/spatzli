@@ -77,20 +77,20 @@ rankSVGsBRISC <- function(spe, x = NULL, n.neighbors = 15,
   stopifnot(length(discard) == nrow(spe))
   ix_keep <- seq_len(nrow(spe))[!discard]
   
-  # ---------------------------------------------------------
-  # fit models and calculate statistics and rankings per gene
-  # ---------------------------------------------------------
+  # --------------------------------------------
+  # fit models and calculate statistics per gene
+  # --------------------------------------------
   
   y <- logcounts(spe)
   
+  # scale coordinates proportionally
   coords <- spatialCoords(spe)
-  # scale coordinates
-  # to do: scale proportionally
-  coords <- apply(coords, 2, function(col) (col - min(col)) / (max(col) - min(col)))
+  range_all <- max(apply(coords, 2, function(col) diff(range(col))))
+  coords <- apply(coords, 2, function(col) (col - min(col)) / range_all)
   
   # parallelized
   out_brisc <- bplapply(ix_keep, function(i) {
-    # fit intercept-only model for each gene, using mostly default parameters
+    # fit model (default if x is NULL is intercept-only model)
     out_i <- BRISC_estimation(coords = coords, y = y[i, ], x = x, n.neighbors = n.neighbors, 
                               n_omp = 1, verbose = FALSE, ...)
     # return estimated parameters and runtime
@@ -102,20 +102,33 @@ rankSVGsBRISC <- function(spe, x = NULL, n.neighbors = 15,
   mat_brisc <- do.call("rbind", out_brisc)
   stopifnot(nrow(mat_brisc) == length(ix_keep))
   
+  # include mean logcounts
+  mat_brisc <- cbind(
+    mat_brisc, 
+    mean = rowMeans(y)
+  )
+  
+  # calculate spatial coefficient of variation
+  mat_brisc <- cbind(
+    mat_brisc, 
+    spcov = sqrt(mat_brisc[, "sigma.sq"]) / mat_brisc[, "mean"]
+  )
+  
   # calculate fraction spatial variance (FSV)
   mat_brisc <- cbind(
     mat_brisc, 
     fsv = mat_brisc[, "sigma.sq"] / (mat_brisc[, "sigma.sq"] + mat_brisc[, "tau.sq"])
   )
   
-  # calculate reversed ranks on sigma.sq
-  rank_sigma.sq <- rank(-1 * mat_brisc[, "sigma.sq"])
-  mat_brisc <- cbind(mat_brisc, rank_sigma.sq = rank_sigma.sq)
-  
   # match to correct rows and store in rowData
   mat_brisc_all <- matrix(NA, nrow = nrow(spe), ncol = ncol(mat_brisc))
   colnames(mat_brisc_all) <- colnames(mat_brisc)
   mat_brisc_all[ix_keep, ] <- mat_brisc
+  
+  # replace means with means for all genes
+  means_all <- rowMeans(logcounts(spe))
+  stopifnot(all(mat_brisc_all[ix_keep, "mean"] == means_all[ix_keep]))
+  mat_brisc_all[, "mean"] <- means_all
   
   rowData(spe) <- cbind(rowData(spe), mat_brisc_all)
   
