@@ -8,7 +8,7 @@
 #' 
 #' 
 #' @param spe Input object (SpatialExperiment). Assumed to contain "logcounts"
-#'   assay and spatial coordinates retrievable as "spatialCoords".
+#'   assay and spatial coordinates.
 #' 
 #' @param x Matrix of covariates for "BRISC_estimation()". Number of rows must
 #'   equal number of spots. See "?BRISC_estimation" for details. Default = NULL
@@ -32,9 +32,9 @@
 #' @param ... Additional arguments to pass to "BRISC_estimation()".
 #' 
 #' 
-#' @return Returns test statistics and rankings of detected SVGs as new columns
-#'   in "rowData". Genes that were not tested due to filtering (zero expression,
-#'   low expression, and/or mitochondrial genes) are given NA values.
+#' @return Returns summary statistics from BRISC as new columns in "rowData",
+#'   which can be used to rank SVGs. Genes that were excluded due to filtering
+#'   are given NA values.
 #' 
 #' 
 #' @importFrom SpatialExperiment spatialCoords

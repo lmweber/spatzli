@@ -17,7 +17,7 @@ rankSVGsBRISC(
 }
 \arguments{
 \item{spe}{Input object (SpatialExperiment). Assumed to contain "logcounts"
-assay and spatial coordinates retrievable as "spatialCoords".}
+assay and spatial coordinates.}
 
 \item{x}{Matrix of covariates for "BRISC_estimation()". Number of rows must
 equal number of spots. See "?BRISC_estimation" for details. Default = NULL
@@ -41,9 +41,9 @@ TRUE". Default = "gene_name".}
 \item{...}{Additional arguments to pass to "BRISC_estimation()".}
 }
 \value{
-Returns test statistics and rankings of detected SVGs as new columns
-  in "rowData". Genes that were not tested due to filtering (zero expression,
-  low expression, and/or mitochondrial genes) are given NA values.
+Returns summary statistics from BRISC as new columns in "rowData",
+  which can be used to rank SVGs. Genes that were excluded due to filtering
+  are given NA values.
 }
 \description{
 Rank spatially variable genes (SVGs) using BRISC approach
