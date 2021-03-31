@@ -93,8 +93,15 @@ rankSVGsBRISC <- function(spe, x = NULL, n.neighbors = 15,
     # fit model (default if x is NULL is intercept-only model)
     out_i <- BRISC_estimation(coords = coords, y = y[i, ], x = x, n.neighbors = n.neighbors, 
                               n_omp = 1, verbose = FALSE, ...)
-    # return estimated parameters and runtime
-    c(out_i$Theta, runtime = out_i$estimation.time[["elapsed"]])
+    # return estimated parameters, sum of spatial components across spots, and runtime
+    res_i <- c(
+      out_i$Theta, 
+      out_i$Beta, 
+      sum_w = sum(out_i$y - out_i$BRISC_Object$Xbeta - out_i$BRISC_Object$norm.residual), 
+      sum_w2 = sum((out_i$y - out_i$BRISC_Object$Xbeta - out_i$BRISC_Object$norm.residual)^2), 
+      runtime = out_i$estimation.time[["elapsed"]]
+    )
+    res_i
   }, BPPARAM = MulticoreParam(workers = n_threads))
   
   # collapse list
