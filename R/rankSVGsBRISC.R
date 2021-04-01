@@ -113,7 +113,7 @@ rankSVGsBRISC <- function(spe, x = NULL, n.neighbors = 15,
   # include mean logcounts
   mat_brisc <- cbind(
     mat_brisc, 
-    mean = rowMeans(y)
+    mean = rowMeans(y)[ix_keep]
   )
   
   # calculate spatial coefficient of variation
