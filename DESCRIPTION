@@ -20,9 +20,7 @@ Imports:
     kernlab, 
     Matrix, 
     methods, 
-    rlang, 
-    ggplot2, 
-    ggExtra
+    rlang
 VignetteBuilder: knitr
 Suggests:
     BiocStyle,
