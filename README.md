@@ -1,25 +1,18 @@
 # spatzli
 
-[![R build status](https://github.com/lmweber/spatzli/workflows/R-CMD-check/badge.svg)](https://github.com/lmweber/spatzli/actions)
+[![R build status](https://github.com/lmweber/spatzli/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/lmweber/spatzli/actions)
 
 
 ## Overview
 
-R package containing functions for analyzing spatial transcriptomics data.
-
-These functions are used in our online textbook [Orchestrating Spatial Transcriptomics Analysis with Bioconductor (OSTA)](https://github.com/lmweber/OSTA-base) and other work.
-
-Currently focused on data from the [10x Genomics Visium](https://www.10xgenomics.com/products/spatial-gene-expression) platform, but may be extended to other platforms in the future.
+R package containing functions for methods to analyze spatially resolved transcriptomics data.
 
 
-## Contents
+## Installation
 
-Functions for:
+The current development version of the package can be installed from GitHub.
 
-- preprocessing visualizations (quality control, filtering)
-- feature selection (spatially variable genes)
-
-Work in progress:
-
-- spatially resolved clustering
+```
+remotes::install_github("lmweber/spatzli", build_vignettes = TRUE)
+```
 
