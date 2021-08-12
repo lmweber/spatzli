@@ -1,14 +1,17 @@
 Package: spatzli
-Version: 0.0.1
-Title: Functions for analyzing spatial transcriptomics data
-Description: Functions for analyzing spatial transcriptomics data, including preprocessing visualizations, spatially variable genes, and spatially resolved clustering. Currently focused on 10x Genomics Visium platform.
-Authors@R: person("Lukas M.", "Weber", email = "lukas.weber.edu@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-3282-1730"))
+Version: 0.99.0
+Title: Methods for analyzing spatially resolved transcriptomics data
+Description: Functions implementing methods to analyze spatially transcriptomics 
+    data. Currently includes methods to identify spatially variable genes (SVGs) 
+    and for spatially aware clustering.
+Authors@R: person(
+    "Lukas M.", "Weber", email = "lukas.weber.edu@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-3282-1730"))
 URL: https://github.com/lmweber/spatzli
 BugReports: https://github.com/lmweber/spatzli/issues
 License: MIT + file LICENSE
 biocViews:
-    SingleCell
-Depends: R (>= 4.0.0)
+    SingleCell, 
+    Transcriptomics
 Imports:
     SpatialExperiment, 
     SingleCellExperiment, 
