@@ -5,12 +5,12 @@
 
 ## Overview
 
-R package containing functions for methods to analyze spatially resolved transcriptomics data.
+R package containing functions implementing methods to analyze spatially resolved transcriptomics data.
 
 
 ## Installation
 
-The current development version of the package can be installed from GitHub.
+The latest development version of the package can be installed from GitHub.
 
 ```
 remotes::install_github("lmweber/spatzli", build_vignettes = TRUE)
