@@ -2,8 +2,8 @@ Package: spatzli
 Version: 0.99.0
 Title: Methods for analyzing spatially resolved transcriptomics data
 Description: Functions implementing methods to analyze spatially transcriptomics 
-    data. Currently includes methods to identify spatially variable genes (SVGs) 
-    and for spatially aware clustering.
+    data. For example, methods to identify spatially variable genes (SVGs) and 
+    for spatially aware clustering.
 Authors@R: person(
     "Lukas M.", "Weber", email = "lukas.weber.edu@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-3282-1730"))
 URL: https://github.com/lmweber/spatzli
@@ -17,16 +17,14 @@ Imports:
     SingleCellExperiment, 
     SummarizedExperiment, 
     BRISC, 
-    spNNGP, 
     matrixStats, 
-    BiocParallel, 
-    kernlab, 
     Matrix, 
+    kernlab, 
     methods, 
-    rlang
+    BiocParallel
 VignetteBuilder: knitr
 Suggests:
-    BiocStyle,
-    knitr,
+    BiocStyle, 
+    knitr, 
     rmarkdown
 RoxygenNote: 7.1.1
