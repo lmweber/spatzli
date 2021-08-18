@@ -1,0 +1,23 @@
+---
+title: "spatzli overview"
+author: 
+  - name: Lukas M. Weber
+    affiliation: "Johns Hopkins Bloomberg School of Public Health, Baltimore, USA"
+package: spatzli
+output: 
+  BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{spatzli overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Introduction
+
+Vignette template for `spatzli` package.
+
