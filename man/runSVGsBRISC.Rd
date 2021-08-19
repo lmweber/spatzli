@@ -51,7 +51,7 @@ prepared with \code{\link{preprocessSVGs}}.
 \examples{
 library(SpatialExperiment)
 library(STexampleData)
-# library(spatzli)
+library(spatzli)
 
 spe <- Visium_humanDLPFC()
 
