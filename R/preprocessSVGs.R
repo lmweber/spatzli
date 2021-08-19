@@ -35,7 +35,8 @@
 #' @importFrom SpatialExperiment spatialData
 #' @importFrom SingleCellExperiment counts
 #' @importFrom SummarizedExperiment assayNames
-#' @importFrom scran quickCluster computeSumFactors logNormCounts
+#' @importFrom scran quickCluster computeSumFactors
+#' @importFrom scuttle logNormCounts
 #' @importFrom methods isClass
 #' 
 #' @export

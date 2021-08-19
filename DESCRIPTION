@@ -22,7 +22,8 @@ Imports:
     kernlab, 
     methods, 
     BiocParallel, 
-    scran
+    scran, 
+    scuttle
 VignetteBuilder: knitr
 Suggests:
     BiocStyle, 
