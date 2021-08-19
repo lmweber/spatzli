@@ -4,7 +4,7 @@
 \alias{runSVGsBRISC}
 \title{runSVGsBRISC}
 \usage{
-runSVGsBRISC(spe, x = NULL, n_threads = 1)
+runSVGsBRISC(spe, x = NULL, n_threads = 1, verbose = FALSE)
 }
 \arguments{
 \item{spe}{\code{SpatialExperiment} Input object, assumed to be a
@@ -18,6 +18,9 @@ more details.}
 
 \item{n_threads}{\code{integer} Number of threads for parallelization.
 Default = 1.}
+
+\item{verbose}{\code{logical} Whether to display verbose output from
+\code{BRISC}. Default = FALSE.}
 }
 \value{
 Returns summary statistics and SVG ranks as new columns in
@@ -46,6 +49,20 @@ named \code{logcounts} and filtered to exclude low-expressed genes, e.g. as
 prepared with \code{\link{preprocessSVGs}}.
 }
 \examples{
-paste0("to do")
+library(SpatialExperiment)
+library(STexampleData)
+# library(spatzli)
+
+spe <- Visium_humanDLPFC()
+
+spe <- preprocessSVGs(spe)
+
+# subset 1 gene
+spe_1 <- spe[1, ]
+spe_1 <- runSVGsBRISC(spe_1, x = NULL, n_threads = 1, verbose = TRUE)
+
+# subset 100 genes
+# spe_100 <- spe[1:100, ]
+# spe_100 <- runSVGsBRISC(spe_100, x = NULL, n_threads = 1)
 
 }

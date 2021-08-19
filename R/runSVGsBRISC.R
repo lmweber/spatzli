@@ -33,6 +33,9 @@
 #' @param n_threads \code{integer} Number of threads for parallelization.
 #'   Default = 1.
 #' 
+#' @param verbose \code{logical} Whether to display verbose output from
+#'   \code{BRISC}. Default = FALSE.
+#' 
 #' 
 #' @return Returns summary statistics and SVG ranks as new columns in
 #'   \code{rowData} in \code{spe} object.
@@ -48,9 +51,23 @@
 #' @export
 #' 
 #' @examples
-#' paste0("to do")
+#' library(SpatialExperiment)
+#' library(STexampleData)
+#' # library(spatzli)
 #' 
-runSVGsBRISC <- function(spe, x = NULL, n_threads = 1) {
+#' spe <- Visium_humanDLPFC()
+#' 
+#' spe <- preprocessSVGs(spe)
+#' 
+#' # subset 1 gene
+#' spe_1 <- spe[1, ]
+#' spe_1 <- runSVGsBRISC(spe_1, x = NULL, n_threads = 1, verbose = TRUE)
+#' 
+#' # subset 100 genes
+#' # spe_100 <- spe[1:100, ]
+#' # spe_100 <- runSVGsBRISC(spe_100, x = NULL, n_threads = 1)
+#' 
+runSVGsBRISC <- function(spe, x = NULL, n_threads = 1, verbose = FALSE) {
   
   stopifnot("logcounts" %in% assayNames(spe))
   
@@ -75,7 +92,7 @@ runSVGsBRISC <- function(spe, x = NULL, n_threads = 1) {
     out_i <- BRISC_estimation(coords = coords, y = y_i, x = x, 
                               n.neighbors = 15, order = "AMMD", 
                               cov.model = "exponential", search.type = "cb", 
-                              verbose = FALSE)
+                              verbose = verbose)
     res_i <- c(out_i$Theta, out_i$Beta, runtime = out_i$estimation.time[["elapsed"]])
     res_i
   }, BPPARAM = MulticoreParam(workers = n_threads))
