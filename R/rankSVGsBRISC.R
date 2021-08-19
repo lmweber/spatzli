@@ -1,85 +1,124 @@
-#' rankSVGsBRISC
+#' runSVGsBRISC
 #' 
-#' Rank spatially variable genes (SVGs) using BRISC approach
+#' Run method to identify spatially variable genes (SVGs) using BRISC
 #' 
-#' Calculate ranking of spatially variable genes (SVGs) using the BRISC approach
-#' (bootstrap for rapid inference on spatial covariances) developed by Saha and
-#' Datta (2018).
+#' Identify top SVGs using BRISC ("bootstrap for rapid inference on spatial
+#' covariances") methodology developed by Saha and Datta (2018).
+#' 
+#' This function runs BRISC separately for each gene, using parallelization for
+#' faster runtime using one core per BRISC run. The main outputs of interest are
+#' the parameter estimates of the covariance model stored in 'Theta' in the
+#' BRISC output. We use the summary value 'sigma.sq / tau.sq' calculated from
+#' these estimates to rank genes as SVGs, which represents spatial variance
+#' divided by non-spatial variance. Alternatively, 'sigma.sq / (sigma.sq +
+#' tau.sq)' could also be used, representing the proportion of spatial variance
+#' out of total variance.
+#' 
+#' This version does not include bootstrap inference on the parameter estimates,
+#' since this is much slower.
+#' 
+#' Assumes the input object is a \code{SpatialExperiment} containing an assay
+#' named \code{logcounts} and filtered to exclude low-expressed genes, e.g. as
+#' prepared with \code{\link{preprocessSVGs}}.
 #' 
 #' 
-#' @param spe Input object (SpatialExperiment). Assumed to contain assays named
-#'   logcounts", and spatial coordinates accessible with "spatialCoords()".
+#' @param spe \code{SpatialExperiment} Input object, assumed to be a
+#'   \code{SpatialExperiment} containing an assay named \code{logcounts} and
+#'   spatial coordinates accessible with \code{spatialCoords()}.
 #' 
-#' @param x Matrix of covariates for "BRISC_estimation()". Number of rows must
-#'   equal number of spots. See "?BRISC_estimation" for details. Default = NULL
-#'   (intercept-only model).
+#' @param x \code{numeric matrix} Matrix of covariates, with number of rows
+#'   (spots) matching the number of columns (spots) in \code{spe}. Default =
+#'   NULL, which is an intercept-only model. See \code{BRISC} documentation for
+#'   more details.
 #' 
-#' @param n_threads Number of threads for parallelization. Default = 4.
+#' @param n_threads \code{integer} Number of threads for parallelization.
+#'   Default = 1.
 #' 
-#' @param ... Additional arguments to pass to "BRISC_estimation()".
+#' @param ... Additional arguments to pass to the \code{BRISC} estimation
+#'   function \code{BRISC_estimation()}.
 #' 
 #' 
-#' @return Returns summary statistics from BRISC as new columns in "rowData",
-#'   which can be used to rank SVGs.
+#' @return Returns summary statistics and SVG ranks as new columns in
+#'   \code{rowData} in \code{spe} object.
 #' 
 #' 
 #' @importFrom SpatialExperiment spatialCoords
-#' @importFrom SingleCellExperiment logcounts counts
-#' @importFrom SummarizedExperiment rowData 'rowData<-'
-#' @importFrom Matrix rowMeans
-#' @importFrom BiocParallel bplapply MulticoreParam
+#' @importFrom SingleCellExperiment logcounts
+#' @importFrom SummarizedExperiment assayNames rowData 'rowData<-'
 #' @importFrom BRISC BRISC_estimation
+#' @importFrom BiocParallel bplapply MulticoreParam
+#' @importFrom Matrix rowMeans
 #' 
 #' @export
 #' 
 #' @examples
 #' # to do
 #' 
-rankSVGsBRISC <- function(spe, x = NULL, n_threads = 4, ...) {
+runSVGsBRISC <- function(spe, x = NULL, n_threads = 1, ...) {
   
-  if (!("logcounts" %in% assayNames(spe))) stop("input object must contain 'logcounts' assay")
+  stopifnot("logcounts" %in% assayNames(spe))
   
   if (!is.null(x)) stopifnot(nrow(x) == ncol(spe))
   
   y <- logcounts(spe)
+  
+  # ---------
+  # run BRISC
+  # ---------
   
   # scale coordinates proportionally
   coords <- spatialCoords(spe)
   range_all <- max(apply(coords, 2, function(col) diff(range(col))))
   coords <- apply(coords, 2, function(col) (col - min(col)) / range_all)
   
-  # parallelized
+  # run BRISC using parallelization
   ix <- seq_len(nrow(y))
   out_brisc <- bplapply(ix, function(i) {
-    # fit model (default if x is NULL is intercept-only model)
-    out_i <- BRISC_estimation(coords = coords, y = y[i, ], x = x, n_omp = 1, verbose = FALSE, ...)
+    # fit model (note: default if x is NULL is intercept-only model)
+    y_i <- y[i, ]
+    out_i <- BRISC_estimation(coords = coords, y = y_i, x = x, 
+                              n.neighbors = 15, order = "AMMD", 
+                              cov.model = "exponential", search.type = "cb", 
+                              verbose = FALSE, ...)
     res_i <- c(out_i$Theta, out_i$Beta, runtime = out_i$estimation.time[["elapsed"]])
     res_i
   }, BPPARAM = MulticoreParam(workers = n_threads))
   
-  # collapse list
+  # collapse output list into matrix
   mat_brisc <- do.call("rbind", out_brisc)
   
-  # include mean logcounts
+  # ------------------------------
+  # calculate statistics and ranks
+  # ------------------------------
+  
+  # mean logcounts
   mat_brisc <- cbind(
     mat_brisc, 
     mean = rowMeans(y)
   )
   
-  # calculate spatial coefficient of variation
+  # spatial coefficient of variation
   mat_brisc <- cbind(
     mat_brisc, 
     spcov = sqrt(mat_brisc[, "sigma.sq"]) / mat_brisc[, "mean"]
   )
   
-  # calculate fraction spatial variance (FSV)
+  # ratio of spatial to non-spatial variance
   mat_brisc <- cbind(
     mat_brisc, 
-    fsv = mat_brisc[, "sigma.sq"] / (mat_brisc[, "sigma.sq"] + mat_brisc[, "tau.sq"])
+    ratio_sv = mat_brisc[, "sigma.sq"] / mat_brisc[, "tau.sq"]
   )
   
-  # store in rowData
-  stopifnot(nrow(rowData(spe)) == nrow(mat_brisc))
+  # proportion of spatial variance (out of total variance)
+  mat_brisc <- cbind(
+    mat_brisc, 
+    prop_sv = mat_brisc[, "sigma.sq"] / (mat_brisc[, "sigma.sq"] + mat_brisc[, "tau.sq"])
+  )
+  
+  # return in rowData of spe object
+  
+  stopifnot(nrow(spe) == nrow(mat_brisc))
+  
   rowData(spe) <- cbind(rowData(spe), mat_brisc)
   
   spe
