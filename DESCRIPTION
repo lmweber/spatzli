@@ -17,6 +17,7 @@ Imports:
     SingleCellExperiment, 
     SummarizedExperiment, 
     BRISC, 
+    GpGp, 
     matrixStats, 
     Matrix, 
     kernlab, 
