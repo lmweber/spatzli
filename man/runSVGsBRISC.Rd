@@ -4,7 +4,7 @@
 \alias{runSVGsBRISC}
 \title{runSVGsBRISC}
 \usage{
-runSVGsBRISC(spe, x = NULL, n_threads = 1, ...)
+runSVGsBRISC(spe, x = NULL, n_threads = 1)
 }
 \arguments{
 \item{spe}{\code{SpatialExperiment} Input object, assumed to be a

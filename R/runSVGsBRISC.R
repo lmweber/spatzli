@@ -50,7 +50,7 @@
 #' @examples
 #' # to do
 #' 
-runSVGsBRISC <- function(spe, x = NULL, n_threads = 1, ...) {
+runSVGsBRISC <- function(spe, x = NULL, n_threads = 1) {
   
   stopifnot("logcounts" %in% assayNames(spe))
   
