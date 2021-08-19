@@ -56,6 +56,6 @@ weights below a minimum threshold. This greatly speeds up runtime compared to
 simpler implementations of Moran's I statistic.
 }
 \examples{
-# to do
+paste0("to do")
 
 }

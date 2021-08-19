@@ -42,7 +42,7 @@
 #' @export
 #' 
 #' @examples
-#' # to do
+#' paste0("to do")
 #' 
 preprocessSVGs <- function(spe, in_tissue = TRUE, 
                            filter_genes = 10, filter_mito = TRUE, 

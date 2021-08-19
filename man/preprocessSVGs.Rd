@@ -46,6 +46,6 @@ is sourced from our online book \code{OSTA}, and makes use of the
 \code{SpatialExperiment} structure.
 }
 \examples{
-# to do
+paste0("to do")
 
 }

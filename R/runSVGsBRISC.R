@@ -48,7 +48,7 @@
 #' @export
 #' 
 #' @examples
-#' # to do
+#' paste0("to do")
 #' 
 runSVGsBRISC <- function(spe, x = NULL, n_threads = 1) {
   

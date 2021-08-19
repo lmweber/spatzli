@@ -46,6 +46,6 @@ named \code{logcounts} and filtered to exclude low-expressed genes, e.g. as
 prepared with \code{\link{preprocessSVGs}}.
 }
 \examples{
-# to do
+paste0("to do")
 
 }

@@ -21,3 +21,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Vignette template for `spatzli` package.
 
+```{r, message=FALSE}
+library(spatzli)
+```
+
+
+## Session information
+
+```{r}
+sessionInfo()
+```
+

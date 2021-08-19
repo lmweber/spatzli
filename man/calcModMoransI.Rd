@@ -60,6 +60,6 @@ spots.
 threshold (e.g. below 1% of the maximum weights value) are equal to zero.
 }
 \examples{
-# to do
+paste0("to do")
 
 }

@@ -55,6 +55,6 @@ calculations. Sparsity is due to both (i) spots with zero expression and (ii)
 weights below a minimum threshold.
 }
 \examples{
-# to do
+paste0("to do")
 
 }

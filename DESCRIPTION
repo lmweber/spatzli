@@ -22,6 +22,7 @@ Imports:
     kernlab, 
     methods, 
     BiocParallel, 
+    parallel, 
     scran, 
     scuttle
 VignetteBuilder: knitr
