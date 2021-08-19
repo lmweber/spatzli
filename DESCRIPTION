@@ -21,7 +21,8 @@ Imports:
     Matrix, 
     kernlab, 
     methods, 
-    BiocParallel
+    BiocParallel, 
+    scran
 VignetteBuilder: knitr
 Suggests:
     BiocStyle, 
