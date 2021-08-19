@@ -7,15 +7,14 @@
 #' 
 #' This function runs BRISC separately for each gene, using parallelization for
 #' faster runtime using one core per BRISC run. The main outputs of interest are
-#' the parameter estimates of the covariance model stored in 'Theta' in the
-#' BRISC output. We use the summary value 'sigma.sq / tau.sq' calculated from
-#' these estimates to rank genes as SVGs, which represents spatial variance
-#' divided by non-spatial variance. Alternatively, 'sigma.sq / (sigma.sq +
-#' tau.sq)' could also be used, representing the proportion of spatial variance
-#' out of total variance.
+#' the covariance parameter estimates stored in 'Theta' in the BRISC output. We
+#' use these estimates to calculate summary values 'ratio_sv' defined as
+#' 'sigma.sq / tau.sq' (ratio of spatial to non-spatial variance), and 'prop_sv'
+#' defined as 'sigma.sq / (sigma.sq + tau.sq)' (proportion of spatial variance
+#' out of total variance), which can be used to rank SVGs.
 #' 
-#' This version does not include bootstrap inference on the parameter estimates,
-#' since this is much slower.
+#' The current version does not run the BRISC bootstrap inference step on the
+#' parameter estimates, since this is much slower.
 #' 
 #' Assumes the input object is a \code{SpatialExperiment} containing an assay
 #' named \code{logcounts} and filtered to exclude low-expressed genes, e.g. as
