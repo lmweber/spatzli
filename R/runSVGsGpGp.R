@@ -51,7 +51,7 @@
 #' @importFrom SpatialExperiment spatialCoords
 #' @importFrom SingleCellExperiment logcounts
 #' @importFrom SummarizedExperiment assayNames rowData 'rowData<-'
-#' @importFrom GpGp order_middleout find_ordered_nn fit_model
+#' @importFrom GpGp order_maxmin find_ordered_nn fit_model
 #' @importFrom BiocParallel bplapply MulticoreParam
 #' @importFrom Matrix rowMeans
 #' @importFrom matrixStats rowVars
@@ -99,7 +99,7 @@ runSVGsGpGp <- function(spe, x = NULL, fix_param_range = 0.5, n_neighbors = 15,
   # prepare for parallelized loop
   
   # calculate ordering only once
-  ord <- order_middleout(coords)
+  ord <- order_maxmin(coords)
   # re-parameterize ordering as ranking (if needed)
   #ord_rank <- match(seq_len(nrow(coords)), ord)
   # calculate nearest neighbors only once
