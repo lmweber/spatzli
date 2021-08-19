@@ -18,6 +18,7 @@ Imports:
     SummarizedExperiment, 
     BRISC, 
     GpGp, 
+    fields, 
     matrixStats, 
     Matrix, 
     kernlab, 
