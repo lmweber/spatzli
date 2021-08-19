@@ -34,9 +34,6 @@
 #' @param n_threads \code{integer} Number of threads for parallelization.
 #'   Default = 1.
 #' 
-#' @param ... Additional arguments to pass to the \code{BRISC} estimation
-#'   function \code{BRISC_estimation()}.
-#' 
 #' 
 #' @return Returns summary statistics and SVG ranks as new columns in
 #'   \code{rowData} in \code{spe} object.
@@ -79,7 +76,7 @@ runSVGsBRISC <- function(spe, x = NULL, n_threads = 1, ...) {
     out_i <- BRISC_estimation(coords = coords, y = y_i, x = x, 
                               n.neighbors = 15, order = "AMMD", 
                               cov.model = "exponential", search.type = "cb", 
-                              verbose = FALSE, ...)
+                              verbose = FALSE)
     res_i <- c(out_i$Theta, out_i$Beta, runtime = out_i$estimation.time[["elapsed"]])
     res_i
   }, BPPARAM = MulticoreParam(workers = n_threads))

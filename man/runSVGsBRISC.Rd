@@ -18,9 +18,6 @@ more details.}
 
 \item{n_threads}{\code{integer} Number of threads for parallelization.
 Default = 1.}
-
-\item{...}{Additional arguments to pass to the \code{BRISC} estimation
-function \code{BRISC_estimation()}.}
 }
 \value{
 Returns summary statistics and SVG ranks as new columns in
