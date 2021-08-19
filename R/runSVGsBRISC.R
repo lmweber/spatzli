@@ -61,7 +61,9 @@
 #' 
 #' # subset 1 gene
 #' spe_1 <- spe[1, ]
-#' spe_1 <- runSVGsBRISC(spe_1, x = NULL, n_threads = 1, verbose = TRUE)
+#' system.time({
+#'   spe_1 <- runSVGsBRISC(spe_1, x = NULL, n_threads = 1, verbose = TRUE)
+#' })
 #' 
 #' # subset 100 genes
 #' # spe_100 <- spe[1:100, ]
