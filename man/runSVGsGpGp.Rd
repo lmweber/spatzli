@@ -34,8 +34,11 @@ value. Default = NULL, which will estimate the parameter instead. See
 \item{n_neighbors}{\code{numeric} Number of nearest neighbors. See
 \code{GpGp} documentation for details.}
 
-\item{lr_test}{\code{logical} Whether to calculate log likelihoods for model
-without spatial terms for likelihood ratio test. Default = TRUE.}
+\item{lr_test}{\code{logical} Whether to calculate likelihood ratio tests. If
+TRUE, will calculate log likelihoods for model without spatial terms,
+likelihood ratio tests using asymptotic chi-square distribution with 2
+degrees of freedom, and adjusted p-values using Benjamini-Hochberg method.
+Default = TRUE.}
 
 \item{n_threads}{\code{integer} Number of threads for parallelization.
 Default = 1.}
