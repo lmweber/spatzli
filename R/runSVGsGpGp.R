@@ -1,23 +1,26 @@
 #' runSVGsGpGp
 #' 
-#' Run method to identify spatially variable genes (SVGs) using GpGp
+#' Run method to identify spatially variable genes (SVGs) using GpGp.
 #' 
-#' Identify top SVGs using GpGp (Guinness 2018).
+#' Run method to identify spatially variable genes (SVGs) using GpGp (Guinness
+#' 2018).
 #' 
 #' This function runs GpGp separately for each gene, using parallelization for
 #' faster runtime using one core per GpGp run. The main outputs of interest are
 #' the covariance parameter estimates stored in 'covparms' in the GpGp output
-#' (variance, range, nugget, if using 'exponential_isotropic' covariance
-#' function). We fix the 'range' parameter (i.e. phi) so it is equal across
-#' genes. In addition, the output 'loglik' can be used for likelihood ratio
-#' tests.
+#' (for the 'exponential_isotropic' covariance function these are: variance,
+#' range, nugget). Optionally, the 'range' parameter (parameterized as 'phi' in
+#' other methods) can be fixed to a user-specified value, so that this parameter
+#' is the same for all genes. We also use the log-likelihood ('loglik' in GpGp
+#' output) to calculate likelihood ratio tests.
 #' 
-#' Note parameterization used by GpGp: total variance = sigmasq + (tausq *
-#' sigmasq); i.e. the nugget is 'tausq * sigmasq', not 'tausq' itself.
+#' Note the parameterization used by GpGp: total variance = sigmasq + (tausq *
+#' sigmasq); i.e. the nugget is 'tausq * sigmasq', not 'tausq' itself as in many
+#' other methods.
 #' 
 #' Assumes the input object is a \code{SpatialExperiment} containing an assay
-#' named \code{logcounts} and filtered to exclude low-expressed genes, e.g. as
-#' prepared with \code{\link{preprocessSVGs}}.
+#' named \code{logcounts}, which has been filtered to exclude very low-expressed
+#' genes, e.g. as prepared with \code{\link{preprocessSVGs}}.
 #' 
 #' 
 #' @param spe \code{SpatialExperiment} Input object, assumed to be a
@@ -26,24 +29,25 @@
 #' 
 #' @param x \code{numeric matrix} Matrix of covariates, with number of rows
 #'   (spots) matching the number of columns (spots) in \code{spe}. Default =
-#'   NULL, which is an intercept-only model. See \code{GpGp} documentation for
-#'   more details.
+#'   NULL, which specifies an intercept-only model. See \code{GpGp}
+#'   documentation for details.
 #' 
 #' @param fix_param_range \code{numeric} Whether to use a fixed parameter value
 #'   for 'range' covariance function parameter in 'exponential_isotropic'
-#'   covariance function (i.e. corresponding to 'phi' in other
-#'   parameterizations). For example, set to 0.5 to fix the parameter to this
-#'   value. Default = NULL, which will estimate the parameter instead. See
-#'   \code{GpGp} documentation for details.
+#'   covariance function (corresponding to 'phi' in other parameterizations).
+#'   For example, set to 0.5 to fix the parameter to this value. Default = NULL,
+#'   which will estimate the parameter. See \code{GpGp} documentation for
+#'   details.
 #' 
 #' @param n_neighbors \code{numeric} Number of nearest neighbors. See
 #'   \code{GpGp} documentation for details.
 #' 
-#' @param lr_test \code{logical} Whether to calculate likelihood ratio tests. If
-#'   TRUE, will calculate log likelihoods for model without spatial terms,
-#'   likelihood ratio tests using asymptotic chi-square distribution with 2
-#'   degrees of freedom, and adjusted p-values using Benjamini-Hochberg method.
-#'   Default = TRUE.
+#' @param lr_test \code{logical} Whether to return log likelihoods and calculate
+#'   likelihood ratio tests compared to the null model without spatial terms. If
+#'   TRUE, will calculate log likelihoods for the null models, calculate
+#'   likelihood ratio tests using the asymptotic chi-squared distribution with 2
+#'   degrees of freedom, and calculate adjusted p-values using the
+#'   Benjamini-Hochberg method. Default = TRUE.
 #' 
 #' @param n_threads \code{integer} Number of threads for parallelization.
 #'   Default = 1.
@@ -52,8 +56,8 @@
 #'   \code{GpGp}. Default = FALSE.
 #' 
 #' 
-#' @return Returns summary statistics and SVG ranks as new columns in
-#'   \code{rowData} in \code{spe} object.
+#' @return Returns values stored as new columns in \code{rowData} in the
+#'   \code{spe} \code{SpatialExperiment} object.
 #' 
 #' 
 #' @importFrom SpatialExperiment spatialCoords
@@ -79,12 +83,12 @@
 #' # subset 1 gene
 #' spe_1 <- spe[1, ]
 #' system.time({
-#'   spe_1 <- runSVGsGpGp(spe_1, x = NULL, n_threads = 1, verbose = TRUE)
+#'   spe_1 <- runSVGsGpGp(spe_1, verbose = TRUE)
 #' })
 #' 
-#' # subset 100 genes
+#' # subset 100 genes and use parallelization
 #' # spe_100 <- spe[1:100, ]
-#' # spe_100 <- runSVGsGpGp(spe_100, x = NULL, n_threads = 4)
+#' # spe_100 <- runSVGsGpGp(spe_100, n_threads = 4)
 #' 
 runSVGsGpGp <- function(spe, x = NULL, fix_param_range = NULL, n_neighbors = 15, 
                         lr_test = TRUE, n_threads = 1, verbose = FALSE) {
