@@ -108,9 +108,9 @@ runSVGsBRISC <- function(spe, x = NULL, n_threads = 1, verbose = FALSE) {
   # collapse output list into matrix
   mat_brisc <- do.call("rbind", out_brisc)
   
-  # ------------------------------
-  # calculate statistics and ranks
-  # ------------------------------
+  # --------------------
+  # calculate statistics
+  # --------------------
   
   # mean logcounts
   mat_brisc <- cbind(

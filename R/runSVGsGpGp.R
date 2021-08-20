@@ -156,9 +156,9 @@ runSVGsGpGp <- function(spe, x = NULL, fix_param_range = NULL, n_neighbors = 15,
     tausq = mat_gpgp[, "tausq_sigmasq"] * mat_gpgp[, "sigmasq"]
   )
   
-  # ------------------------------
-  # calculate statistics and ranks
-  # ------------------------------
+  # --------------------
+  # calculate statistics
+  # --------------------
   
   # mean logcounts
   mat_gpgp <- cbind(
