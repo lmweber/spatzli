@@ -40,6 +40,9 @@
 #' @param n_threads \code{integer} Number of threads for parallelization.
 #'   Default = 1.
 #' 
+#' @param lr_test \code{logical} Whether to calculate log likelihoods for model
+#'   without spatial terms for likelihood ratio test. Default = FALSE.
+#' 
 #' @param verbose \code{logical} Whether to display verbose output from
 #'   \code{GpGp}. Default = FALSE.
 #' 
@@ -55,6 +58,7 @@
 #' @importFrom BiocParallel bplapply MulticoreParam
 #' @importFrom Matrix rowMeans
 #' @importFrom matrixStats rowVars
+#' @importFrom stats lm logLik
 #' 
 #' @export
 #' 
@@ -78,7 +82,7 @@
 #' # spe_100 <- runSVGsGpGp(spe_100, x = NULL, n_threads = 4)
 #' 
 runSVGsGpGp <- function(spe, x = NULL, fix_param_range = 0.5, n_neighbors = 15, 
-                        n_threads = 1, verbose = FALSE) {
+                        n_threads = 1, lr_test = FALSE, verbose = FALSE) {
   
   stopifnot("logcounts" %in% assayNames(spe))
   
@@ -169,6 +173,25 @@ runSVGsGpGp <- function(spe, x = NULL, fix_param_range = 0.5, n_neighbors = 15,
     mat_gpgp, 
     prop_sv = mat_gpgp[, "sigmasq"] / (mat_gpgp[, "sigmasq"] + mat_gpgp[, "tausq"])
   )
+  
+  # ----------------------
+  # likelihood ratio tests
+  # ----------------------
+  
+  if (lr_test) {
+    loglik_lm <- sapply(seq_len(nrow(spe)), function(i) {
+      y_i <- y[i, ]
+      if (is.null(x)) {
+        x <- rep(1, ncol(spe))
+      }
+      as.numeric(logLik(lm(y_i ~ x)))
+    })
+    
+    mat_gpgp <- cbind(
+      mat_gpgp, 
+      loglik_lm = loglik_lm
+    )
+  }
   
   # return in rowData of spe object
   

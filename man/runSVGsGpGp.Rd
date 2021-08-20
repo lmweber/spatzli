@@ -10,6 +10,7 @@ runSVGsGpGp(
   fix_param_range = 0.5,
   n_neighbors = 15,
   n_threads = 1,
+  lr_test = FALSE,
   verbose = FALSE
 )
 }
@@ -33,6 +34,9 @@ function (corresponding to 'phi' in other parameterizations). Default =
 
 \item{n_threads}{\code{integer} Number of threads for parallelization.
 Default = 1.}
+
+\item{lr_test}{\code{logical} Whether to calculate log likelihoods for model
+without spatial terms for likelihood ratio test. Default = FALSE.}
 
 \item{verbose}{\code{logical} Whether to display verbose output from
 \code{GpGp}. Default = FALSE.}
