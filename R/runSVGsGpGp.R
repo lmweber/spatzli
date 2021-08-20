@@ -32,16 +32,17 @@
 #' @param fix_param_range \code{numeric} Fixed parameter value to use for
 #'   'range' covariance function parameter in 'exponential_isotropic' covariance
 #'   function (corresponding to 'phi' in other parameterizations). Default =
-#'   0.5. See \code{GpGp} documentation for details on parameterization.
+#'   0.5. Set to NULL to estimate parameter instead. See \code{GpGp}
+#'   documentation for details on parameterization.
 #' 
 #' @param n_neighbors \code{numeric} Number of nearest neighbors. See
 #'   \code{GpGp} documentation for details.
 #' 
-#' @param n_threads \code{integer} Number of threads for parallelization.
-#'   Default = 1.
-#' 
 #' @param lr_test \code{logical} Whether to calculate log likelihoods for model
 #'   without spatial terms for likelihood ratio test. Default = FALSE.
+#' 
+#' @param n_threads \code{integer} Number of threads for parallelization.
+#'   Default = 1.
 #' 
 #' @param verbose \code{logical} Whether to display verbose output from
 #'   \code{GpGp}. Default = FALSE.
@@ -58,7 +59,7 @@
 #' @importFrom BiocParallel bplapply MulticoreParam
 #' @importFrom Matrix rowMeans
 #' @importFrom matrixStats rowVars
-#' @importFrom stats lm logLik
+#' @importFrom stats lm logLik pchisq p.adjust
 #' 
 #' @export
 #' 
@@ -82,7 +83,7 @@
 #' # spe_100 <- runSVGsGpGp(spe_100, x = NULL, n_threads = 4)
 #' 
 runSVGsGpGp <- function(spe, x = NULL, fix_param_range = 0.5, n_neighbors = 15, 
-                        n_threads = 1, lr_test = FALSE, verbose = FALSE) {
+                        lr_test = FALSE, n_threads = 1, verbose = FALSE) {
   
   stopifnot("logcounts" %in% assayNames(spe))
   
@@ -116,9 +117,16 @@ runSVGsGpGp <- function(spe, x = NULL, fix_param_range = 0.5, n_neighbors = 15,
     y_i <- y[i, ]
     runtime <- system.time({
       # note: fixed parameter phi, manual reordering, using pre-calculated nearest neighbors
+      if (is.null(fix_param_range)) {
+        start_parms <- NULL
+        fixed_parms <- NULL
+      } else {
+        start_parms <- c(0.1, fix_param_range, 0.1)
+        fixed_parms = 2
+      }
       out_i <- fit_model(y = y_i[ord], locs = coords[ord, ], X = x[ord, ], 
                          covfun_name = "exponential_isotropic", 
-                         start_parms = c(0.1, fix_param_range, 0.1), fixed_parms = 2, 
+                         start_parms = start_parms, fixed_parms = fixed_parms, 
                          NNarray = nn, reorder = FALSE, m_seq = n_neighbors, 
                          silent = !verbose)
     })
@@ -178,6 +186,7 @@ runSVGsGpGp <- function(spe, x = NULL, fix_param_range = 0.5, n_neighbors = 15,
   # likelihood ratio tests
   # ----------------------
   
+  # calculate log likelihoods for non-spatial models
   if (lr_test) {
     loglik_lm <- sapply(seq_len(nrow(spe)), function(i) {
       y_i <- y[i, ]
@@ -190,6 +199,21 @@ runSVGsGpGp <- function(spe, x = NULL, fix_param_range = 0.5, n_neighbors = 15,
     mat_gpgp <- cbind(
       mat_gpgp, 
       loglik_lm = loglik_lm
+    )
+  }
+  
+  # calculate likelihood ratio test (Wilks' theorem, asymptotic chi-square with 
+  # 2 degrees of freedom since 2 more parameters in full model)
+  if (lr_test) {
+    lr_stat = -2 * (mat_gpgp[, "loglik_lm"] - mat_gpgp[, "loglik"])
+    pval <- 1 - pchisq(lr_stat, df = 2)
+    padj <- p.adjust(pval, method = "BH")
+    
+    mat_gpgp <- cbind(
+      mat_gpgp, 
+      lr_stat = lr_stat, 
+      pval = pval, 
+      padj = padj
     )
   }
   

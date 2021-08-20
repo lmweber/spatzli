@@ -9,8 +9,8 @@ runSVGsGpGp(
   x = NULL,
   fix_param_range = 0.5,
   n_neighbors = 15,
-  n_threads = 1,
   lr_test = FALSE,
+  n_threads = 1,
   verbose = FALSE
 )
 }
@@ -27,16 +27,17 @@ more details.}
 \item{fix_param_range}{\code{numeric} Fixed parameter value to use for
 'range' covariance function parameter in 'exponential_isotropic' covariance
 function (corresponding to 'phi' in other parameterizations). Default =
-0.5. See \code{GpGp} documentation for details on parameterization.}
+0.5. Set to NULL to estimate parameter instead. See \code{GpGp}
+documentation for details on parameterization.}
 
 \item{n_neighbors}{\code{numeric} Number of nearest neighbors. See
 \code{GpGp} documentation for details.}
 
-\item{n_threads}{\code{integer} Number of threads for parallelization.
-Default = 1.}
-
 \item{lr_test}{\code{logical} Whether to calculate log likelihoods for model
 without spatial terms for likelihood ratio test. Default = FALSE.}
+
+\item{n_threads}{\code{integer} Number of threads for parallelization.
+Default = 1.}
 
 \item{verbose}{\code{logical} Whether to display verbose output from
 \code{GpGp}. Default = FALSE.}
