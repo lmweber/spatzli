@@ -7,9 +7,9 @@
 runSVGsGpGp(
   spe,
   x = NULL,
-  fix_param_range = 0.5,
+  fix_param_range = NULL,
   n_neighbors = 15,
-  lr_test = FALSE,
+  lr_test = TRUE,
   n_threads = 1,
   verbose = FALSE
 )
@@ -24,17 +24,18 @@ spatial coordinates accessible with \code{spatialCoords()}.}
 NULL, which is an intercept-only model. See \code{GpGp} documentation for
 more details.}
 
-\item{fix_param_range}{\code{numeric} Fixed parameter value to use for
-'range' covariance function parameter in 'exponential_isotropic' covariance
-function (corresponding to 'phi' in other parameterizations). Default =
-0.5. Set to NULL to estimate parameter instead. See \code{GpGp}
-documentation for details on parameterization.}
+\item{fix_param_range}{\code{numeric} Whether to use a fixed parameter value
+for 'range' covariance function parameter in 'exponential_isotropic'
+covariance function (i.e. corresponding to 'phi' in other
+parameterizations). For example, set to 0.5 to fix the parameter to this
+value. Default = NULL, which will estimate the parameter instead. See
+\code{GpGp} documentation for details.}
 
 \item{n_neighbors}{\code{numeric} Number of nearest neighbors. See
 \code{GpGp} documentation for details.}
 
 \item{lr_test}{\code{logical} Whether to calculate log likelihoods for model
-without spatial terms for likelihood ratio test. Default = FALSE.}
+without spatial terms for likelihood ratio test. Default = TRUE.}
 
 \item{n_threads}{\code{integer} Number of threads for parallelization.
 Default = 1.}

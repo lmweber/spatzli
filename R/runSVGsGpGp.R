@@ -29,17 +29,18 @@
 #'   NULL, which is an intercept-only model. See \code{GpGp} documentation for
 #'   more details.
 #' 
-#' @param fix_param_range \code{numeric} Fixed parameter value to use for
-#'   'range' covariance function parameter in 'exponential_isotropic' covariance
-#'   function (corresponding to 'phi' in other parameterizations). Default =
-#'   0.5. Set to NULL to estimate parameter instead. See \code{GpGp}
-#'   documentation for details on parameterization.
+#' @param fix_param_range \code{numeric} Whether to use a fixed parameter value
+#'   for 'range' covariance function parameter in 'exponential_isotropic'
+#'   covariance function (i.e. corresponding to 'phi' in other
+#'   parameterizations). For example, set to 0.5 to fix the parameter to this
+#'   value. Default = NULL, which will estimate the parameter instead. See
+#'   \code{GpGp} documentation for details.
 #' 
 #' @param n_neighbors \code{numeric} Number of nearest neighbors. See
 #'   \code{GpGp} documentation for details.
 #' 
 #' @param lr_test \code{logical} Whether to calculate log likelihoods for model
-#'   without spatial terms for likelihood ratio test. Default = FALSE.
+#'   without spatial terms for likelihood ratio test. Default = TRUE.
 #' 
 #' @param n_threads \code{integer} Number of threads for parallelization.
 #'   Default = 1.
@@ -82,8 +83,8 @@
 #' # spe_100 <- spe[1:100, ]
 #' # spe_100 <- runSVGsGpGp(spe_100, x = NULL, n_threads = 4)
 #' 
-runSVGsGpGp <- function(spe, x = NULL, fix_param_range = 0.5, n_neighbors = 15, 
-                        lr_test = FALSE, n_threads = 1, verbose = FALSE) {
+runSVGsGpGp <- function(spe, x = NULL, fix_param_range = NULL, n_neighbors = 15, 
+                        lr_test = TRUE, n_threads = 1, verbose = FALSE) {
   
   stopifnot("logcounts" %in% assayNames(spe))
   
@@ -116,7 +117,7 @@ runSVGsGpGp <- function(spe, x = NULL, fix_param_range = 0.5, n_neighbors = 15,
     # fit model (note: default if x is NULL is intercept-only model)
     y_i <- y[i, ]
     runtime <- system.time({
-      # note: fixed parameter phi, manual reordering, using pre-calculated nearest neighbors
+      # note: using manual reordering, pre-calculated nearest neighbors, optionally fixed parameter
       if (is.null(fix_param_range)) {
         start_parms <- NULL
         fixed_parms <- NULL
