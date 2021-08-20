@@ -13,8 +13,8 @@ spatial coordinates accessible with \code{spatialCoords()}.}
 
 \item{x}{\code{numeric matrix} Matrix of covariates, with number of rows
 (spots) matching the number of columns (spots) in \code{spe}. Default =
-NULL, which is an intercept-only model. See \code{BRISC} documentation for
-more details.}
+NULL, which specifies an intercept-only model. See \code{BRISC}
+documentation for details.}
 
 \item{n_threads}{\code{integer} Number of threads for parallelization.
 Default = 1.}
@@ -23,30 +23,31 @@ Default = 1.}
 \code{BRISC}. Default = FALSE.}
 }
 \value{
-Returns summary statistics and SVG ranks as new columns in
-  \code{rowData} in \code{spe} object.
+Returns output values stored as new columns in \code{rowData} in the
+  \code{spe} \code{SpatialExperiment} object.
 }
 \description{
-Run method to identify spatially variable genes (SVGs) using BRISC
+Run method to identify spatially variable genes (SVGs) using BRISC.
 }
 \details{
-Identify top SVGs using BRISC ("bootstrap for rapid inference on spatial
-covariances") methodology developed by Saha and Datta (2018).
+Run method to identify spatially variable genes (SVGs) using BRISC
+("bootstrap for rapid inference on spatial covariances") methodology (Saha
+and Datta 2018).
 
 This function runs BRISC separately for each gene, using parallelization for
 faster runtime using one core per BRISC run. The main outputs of interest are
-the covariance parameter estimates stored in 'Theta' in the BRISC output. We
-use these estimates to calculate summary values 'ratio_sv' defined as
-'sigma.sq / tau.sq' (ratio of spatial to non-spatial variance), and 'prop_sv'
-defined as 'sigma.sq / (sigma.sq + tau.sq)' (proportion of spatial variance
-out of total variance), which can be used to rank SVGs.
+the covariance parameter estimates stored in 'Theta' in the BRISC output
+(sigma.sq, tau.sq, phi). We use these estimates to perform inference on the
+'sigma.sq' parameter, and to calculate an effect size estimate defined as the
+proportion of spatial variance out of total variance, 'prop_sv' = 'sigma.sq /
+(sigma.sq + tau.sq)'.
 
-The current version does not run the BRISC bootstrap inference step on the
-parameter estimates, since this is much slower.
+Significant SVGs can then be identified as those with a highly significant
+p-value from 'sigma.sq' and large effect size 'prop_sv'.
 
 Assumes the input object is a \code{SpatialExperiment} containing an assay
-named \code{logcounts} and filtered to exclude low-expressed genes, e.g. as
-prepared with \code{\link{preprocessSVGs}}.
+named \code{logcounts}, which has been filtered to exclude very low-expressed
+genes, e.g. as prepared with \code{\link{preprocessSVGs}}.
 }
 \examples{
 library(SpatialExperiment)
@@ -60,11 +61,11 @@ spe <- preprocessSVGs(spe)
 # subset 1 gene
 spe_1 <- spe[1, ]
 system.time({
-  spe_1 <- runSVGsBRISC(spe_1, x = NULL, n_threads = 1, verbose = TRUE)
+  spe_1 <- runSVGsBRISC(spe_1, verbose = TRUE)
 })
 
-# subset 100 genes
+# subset 100 genes and use parallelization
 # spe_100 <- spe[1:100, ]
-# spe_100 <- runSVGsBRISC(spe_100, x = NULL, n_threads = 1)
+# spe_100 <- runSVGsBRISC(spe_100, n_threads = 4)
 
 }

@@ -56,7 +56,7 @@
 #'   \code{GpGp}. Default = FALSE.
 #' 
 #' 
-#' @return Returns values stored as new columns in \code{rowData} in the
+#' @return Returns output values stored as new columns in \code{rowData} in the
 #'   \code{spe} \code{SpatialExperiment} object.
 #' 
 #' 
@@ -225,7 +225,9 @@ runSVGsGpGp <- function(spe, x = NULL, fix_param_range = NULL, n_neighbors = 15,
     )
   }
   
+  # -------------------------------
   # return in rowData of spe object
+  # -------------------------------
   
   stopifnot(nrow(spe) == nrow(mat_gpgp))
   

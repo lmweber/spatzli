@@ -48,7 +48,7 @@ Default = 1.}
 \code{GpGp}. Default = FALSE.}
 }
 \value{
-Returns values stored as new columns in \code{rowData} in the
+Returns output values stored as new columns in \code{rowData} in the
   \code{spe} \code{SpatialExperiment} object.
 }
 \description{
