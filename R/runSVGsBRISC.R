@@ -31,6 +31,13 @@
 #'   NULL, which specifies an intercept-only model. See \code{BRISC}
 #'   documentation for details.
 #' 
+#' @param lr_test \code{logical} Whether to return log likelihoods and calculate
+#'   likelihood ratio tests compared to the null model without spatial terms. If
+#'   TRUE, will calculate log likelihoods for the null models, calculate
+#'   likelihood ratio tests using the asymptotic chi-squared distribution with 2
+#'   degrees of freedom, and calculate adjusted p-values using the
+#'   Benjamini-Hochberg method. Default = TRUE.
+#' 
 #' @param n_threads \code{integer} Number of threads for parallelization.
 #'   Default = 1.
 #' 
@@ -70,7 +77,8 @@
 #' # spe_100 <- spe[1:100, ]
 #' # spe_100 <- runSVGsBRISC(spe_100, n_threads = 4)
 #' 
-runSVGsBRISC <- function(spe, x = NULL, n_threads = 1, verbose = FALSE) {
+runSVGsBRISC <- function(spe, x = NULL, lr_test = TRUE, 
+                         n_threads = 1, verbose = FALSE) {
   
   stopifnot("logcounts" %in% assayNames(spe))
   
@@ -87,6 +95,9 @@ runSVGsBRISC <- function(spe, x = NULL, n_threads = 1, verbose = FALSE) {
   range_all <- max(apply(coords, 2, function(col) diff(range(col))))
   coords <- apply(coords, 2, function(col) (col - min(col)) / range_all)
   
+  # calculate ordering for BRISC
+  order_brisc <- BRISC_order(coords, order = "AMMD", verbose = verbose)
+  
   # run BRISC using parallelization
   ix <- seq_len(nrow(y))
   out_brisc <- bplapply(ix, function(i) {
@@ -94,12 +105,14 @@ runSVGsBRISC <- function(spe, x = NULL, n_threads = 1, verbose = FALSE) {
     y_i <- y[i, ]
     runtime <- system.time({
       out_i <- BRISC_estimation(coords = coords, y = y_i, x = x, 
-                                n.neighbors = 15, order = "AMMD", 
+                                n.neighbors = 15, 
                                 cov.model = "exponential", search.type = "cb", 
+                                ordering = order_brisc, 
                                 verbose = verbose)
     })
     res_i <- c(
       out_i$Theta, 
+      loglik = out_i$log_likelihood, 
       runtime = runtime[["elapsed"]]
     )
     res_i
@@ -141,6 +154,41 @@ runSVGsBRISC <- function(spe, x = NULL, n_threads = 1, verbose = FALSE) {
     mat_brisc, 
     prop_sv = mat_brisc[, "sigma.sq"] / (mat_brisc[, "sigma.sq"] + mat_brisc[, "tau.sq"])
   )
+  
+  # ----------------------
+  # likelihood ratio tests
+  # ----------------------
+  
+  # calculate log likelihoods for non-spatial models
+  if (lr_test) {
+    loglik_lm <- sapply(seq_len(nrow(spe)), function(i) {
+      y_i <- y[i, ]
+      if (is.null(x)) {
+        x <- rep(1, ncol(spe))
+      }
+      as.numeric(logLik(lm(y_i ~ x)))
+    })
+    
+    mat_brisc <- cbind(
+      mat_brisc, 
+      loglik_lm = loglik_lm
+    )
+  }
+  
+  # calculate likelihood ratio test (Wilks' theorem, asymptotic chi-square with 
+  # 2 degrees of freedom since 2 more parameters in full model)
+  if (lr_test) {
+    lr_stat = -2 * (mat_brisc[, "loglik_lm"] - mat_brisc[, "loglik"])
+    pval <- 1 - pchisq(lr_stat, df = 2)
+    padj <- p.adjust(pval, method = "BH")
+    
+    mat_brisc <- cbind(
+      mat_brisc, 
+      lr_stat = lr_stat, 
+      pval = pval, 
+      padj = padj
+    )
+  }
   
   # -------------------------------
   # return in rowData of spe object

@@ -4,7 +4,7 @@
 \alias{runSVGsBRISC}
 \title{runSVGsBRISC}
 \usage{
-runSVGsBRISC(spe, x = NULL, n_threads = 1, verbose = FALSE)
+runSVGsBRISC(spe, x = NULL, lr_test = TRUE, n_threads = 1, verbose = FALSE)
 }
 \arguments{
 \item{spe}{\code{SpatialExperiment} Input object, assumed to be a
@@ -15,6 +15,13 @@ spatial coordinates accessible with \code{spatialCoords()}.}
 (spots) matching the number of columns (spots) in \code{spe}. Default =
 NULL, which specifies an intercept-only model. See \code{BRISC}
 documentation for details.}
+
+\item{lr_test}{\code{logical} Whether to return log likelihoods and calculate
+likelihood ratio tests compared to the null model without spatial terms. If
+TRUE, will calculate log likelihoods for the null models, calculate
+likelihood ratio tests using the asymptotic chi-squared distribution with 2
+degrees of freedom, and calculate adjusted p-values using the
+Benjamini-Hochberg method. Default = TRUE.}
 
 \item{n_threads}{\code{integer} Number of threads for parallelization.
 Default = 1.}
