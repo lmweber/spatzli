@@ -52,7 +52,7 @@
 #' @importFrom SpatialExperiment spatialCoords
 #' @importFrom SingleCellExperiment logcounts
 #' @importFrom SummarizedExperiment assayNames rowData 'rowData<-'
-#' @importFrom BRISC BRISC_order BRISC_estimation
+#' @importFrom BRISC BRISC_order BRISC_neighbor BRISC_estimation
 #' @importFrom BiocParallel bplapply MulticoreParam
 #' @importFrom Matrix rowMeans
 #' 
@@ -95,8 +95,13 @@ runSVGsBRISC <- function(spe, x = NULL, lr_test = TRUE,
   range_all <- max(apply(coords, 2, function(col) diff(range(col))))
   coords <- apply(coords, 2, function(col) (col - min(col)) / range_all)
   
-  # calculate ordering for BRISC
+  # calculate ordering
   order_brisc <- BRISC_order(coords, order = "AMMD", verbose = verbose)
+  
+  # calculate nearest neighbors
+  nn_brisc <- BRISC_neighbor(coords, n.neighbors = 15, n_omp = 1, 
+                             search.type = "cb", ordering = order_brisc, 
+                             verbose = verbose)
   
   # run BRISC using parallelization
   ix <- seq_len(nrow(y))
@@ -105,9 +110,8 @@ runSVGsBRISC <- function(spe, x = NULL, lr_test = TRUE,
     y_i <- y[i, ]
     runtime <- system.time({
       out_i <- BRISC_estimation(coords = coords, y = y_i, x = x, 
-                                n.neighbors = 15, 
-                                cov.model = "exponential", search.type = "cb", 
-                                ordering = order_brisc, 
+                                cov.model = "exponential", 
+                                ordering = order_brisc, neighbor = nn_brisc, 
                                 verbose = verbose)
     })
     res_i <- c(
