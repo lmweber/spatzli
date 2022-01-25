@@ -30,7 +30,7 @@ Default = TRUE. Set to FALSE to disable.}
 \value{
 Returns a \code{SpatialExperiment} object with cluster labels stored
   in a column in \code{colData}, which can then be extracted and provided to
-  \code{\link{nnSVG}} as a matrix of covariates.
+  \code{nnSVG} as a matrix of covariates.
 }
 \description{
 Clustering to identify major cell types as input for nnSVG

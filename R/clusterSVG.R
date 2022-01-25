@@ -37,7 +37,7 @@
 #' 
 #' @return Returns a \code{SpatialExperiment} object with cluster labels stored
 #'   in a column in \code{colData}, which can then be extracted and provided to
-#'   \code{\link{nnSVG}} as a matrix of covariates.
+#'   \code{nnSVG} as a matrix of covariates.
 #' 
 #' 
 #' @importFrom SingleCellExperiment logcounts 'colLabels<-'
