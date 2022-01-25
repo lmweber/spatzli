@@ -48,7 +48,7 @@
 #' 
 #' 
 #' @return Returns a \code{SpatialExperiment} object that can be provided to
-#'   \code{\link{nnSVG}}.
+#'   \code{nnSVG}.
 #' 
 #' 
 #' @importFrom SpatialExperiment spatialData 'colData<-'

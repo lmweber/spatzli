@@ -50,7 +50,7 @@ size normalization will be used instead. Default = TRUE.}
 }
 \value{
 Returns a \code{SpatialExperiment} object that can be provided to
-  \code{\link{nnSVG}}.
+  \code{nnSVG}.
 }
 \description{
 Preprocessing steps to prepare input data for nnSVG
