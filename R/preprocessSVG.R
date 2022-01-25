@@ -88,7 +88,7 @@ preprocessSVG <- function(spe, in_tissue = TRUE,
   # keep only spots over tissue
   
   if (in_tissue) {
-    stopifnot("in_tissue" %in% colnames(colData(spe)))
+    #stopifnot("in_tissue" %in% colnames(colData(spe)))
     spe <- spe[, colData(spe)$in_tissue == 1]
   }
   
