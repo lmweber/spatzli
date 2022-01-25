@@ -19,8 +19,7 @@
 #'   spatial coordinates stored in the \code{spatialCoords} slot.
 #' 
 #' @param in_tissue \code{logical} Whether to keep only spots over tissue,
-#'   identified by the column \code{in_tissue} in the \code{spatialData} slot.
-#'   Default = TRUE.
+#'   identified by column \code{in_tissue} in \code{colData}. Default = TRUE.
 #' 
 #' @param filter_genes \code{integer} Whether to filter low-expressed genes. If
 #'   a value is provided, genes with at least 1 unique molecular identifier
@@ -51,9 +50,9 @@
 #'   \code{nnSVG}.
 #' 
 #' 
-#' @importFrom SpatialExperiment spatialData 'colData<-'
+#' @importFrom SpatialExperiment 'colData<-'
 #' @importFrom SingleCellExperiment counts
-#' @importFrom SummarizedExperiment assayNames
+#' @importFrom SummarizedExperiment colData assayNames
 #' @importFrom scry nullResiduals
 #' @importFrom scran quickCluster computeSumFactors
 #' @importFrom scuttle computeLibraryFactors
@@ -89,8 +88,8 @@ preprocessSVG <- function(spe, in_tissue = TRUE,
   # keep only spots over tissue
   
   if (in_tissue) {
-    stopifnot("in_tissue" %in% colnames(spatialData(spe)))
-    spe <- spe[, spatialData(spe)$in_tissue == 1]
+    stopifnot("in_tissue" %in% colnames(colData(spe)))
+    spe <- spe[, colData(spe)$in_tissue == 1]
   }
   
   # gene filtering

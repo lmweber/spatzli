@@ -21,8 +21,7 @@ preprocessSVG(
 spatial coordinates stored in the \code{spatialCoords} slot.}
 
 \item{in_tissue}{\code{logical} Whether to keep only spots over tissue,
-identified by the column \code{in_tissue} in the \code{spatialData} slot.
-Default = TRUE.}
+identified by column \code{in_tissue} in \code{colData}. Default = TRUE.}
 
 \item{filter_genes}{\code{integer} Whether to filter low-expressed genes. If
 a value is provided, genes with at least 1 unique molecular identifier
